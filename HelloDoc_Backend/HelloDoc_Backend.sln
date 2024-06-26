@@ -1,0 +1,46 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31903.59
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloDoc_Api", "HelloDoc_Api\HelloDoc_Api.csproj", "{8BD12910-814D-4AEE-AC11-2FA4B66E2956}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloDoc_BusinessAccessLayer", "HelloDoc_BusinessAccessLayer\HelloDoc_BusinessAccessLayer.csproj", "{B54747C0-33DD-4A35-B923-60E13CE1821E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloDoc_Common", "HelloDoc_Common\HelloDoc_Common.csproj", "{74DFBF05-6BB0-42A0-85BE-A68703743A92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloDoc_Entities", "HelloDoc_Entities\HelloDoc_Entities.csproj", "{8F7A4270-FD9E-435E-BD29-9541B139B530}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HelloDoc_DataAccessLayer", "HelloDoc_DataAccessLayer\HelloDoc_DataAccessLayer.csproj", "{02F1BA7A-4EBE-4886-8323-51889E8F2B5C}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BD12910-814D-4AEE-AC11-2FA4B66E2956}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BD12910-814D-4AEE-AC11-2FA4B66E2956}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BD12910-814D-4AEE-AC11-2FA4B66E2956}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BD12910-814D-4AEE-AC11-2FA4B66E2956}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B54747C0-33DD-4A35-B923-60E13CE1821E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B54747C0-33DD-4A35-B923-60E13CE1821E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B54747C0-33DD-4A35-B923-60E13CE1821E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B54747C0-33DD-4A35-B923-60E13CE1821E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74DFBF05-6BB0-42A0-85BE-A68703743A92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74DFBF05-6BB0-42A0-85BE-A68703743A92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74DFBF05-6BB0-42A0-85BE-A68703743A92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74DFBF05-6BB0-42A0-85BE-A68703743A92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F7A4270-FD9E-435E-BD29-9541B139B530}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F7A4270-FD9E-435E-BD29-9541B139B530}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F7A4270-FD9E-435E-BD29-9541B139B530}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F7A4270-FD9E-435E-BD29-9541B139B530}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02F1BA7A-4EBE-4886-8323-51889E8F2B5C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02F1BA7A-4EBE-4886-8323-51889E8F2B5C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02F1BA7A-4EBE-4886-8323-51889E8F2B5C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02F1BA7A-4EBE-4886-8323-51889E8F2B5C}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
