@@ -3,20 +3,22 @@ using HelloDoc_Common.Constants;
 using HelloDoc_Entities.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 
-namespace HelloDoc_Api.Helpers
+namespace HelloDoc_DataAccessLayer.Helpers
 {
     public class ResponseHelper
     {
-        public static IActionResult CreatedResponse<T>(T? data, string message)
+        public static IActionResult CreatedResponse<T>(bool success, string message, T? data)
         {
-            ApiResponse<T> result = new()
+            HttpStatusCode statusCode = success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
+
+            ApiResponse<T> result = new ApiResponse<T>
             {
-                StatusCode = (int)HttpStatusCode.Created,
+                StatusCode = (int)statusCode,
                 Message = message,
                 Data = data,
-                Success = true,
+                Success = success,
             };
-            return new ObjectResult(result) { StatusCode = (int)HttpStatusCode.Created };
+            return new ObjectResult(result) { StatusCode = (int)statusCode };
         }
 
         public static IActionResult SuccessResponse<T>(T? data, string message = SystemConstants.SUCCESS)

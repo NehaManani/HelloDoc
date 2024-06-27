@@ -9,8 +9,8 @@ import {
 } from '@angular/common/http';
 import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { IMAGE_CONFIG } from '@angular/common';
-import { LoaderInterceptor } from './interceptors/loader.interceptor';
 import { provideToastr } from 'ngx-toastr';
+import { LoaderInterceptor } from './interceptors/loader.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [

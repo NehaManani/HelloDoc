@@ -1,10 +1,12 @@
 using System.Reflection;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_BusinessAccessLayer.Profiles;
+using HelloDoc_BusinessAccessLayer.Services;
 using HelloDoc_Common.Constants;
 using HelloDoc_DataAccessLayer.Data;
 using HelloDoc_DataAccessLayer.IRepositories;
 using HelloDoc_DataAccessLayer.Repositories;
+using HelloDoc_Entities.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 
@@ -16,7 +18,7 @@ namespace HelloDoc_Api.Extensions
         {
             services.AddDbContext<AppDbContext>(options =>
             {
-                options.UseSqlServer(config.GetConnectionString(SystemConstants.DEFAULT_CONNECTION));
+                options.UseNpgsql(config.GetConnectionString(SystemConstants.DEFAULT_CONNECTION));
             });
         }
 
@@ -38,6 +40,14 @@ namespace HelloDoc_Api.Extensions
         public static void RegisterServices(this IServiceCollection services)
         {
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddHttpClient("customClient", client =>
+            {
+                // Configure HttpClient properties as needed
+            }).ConfigurePrimaryHttpMessageHandler(() => new HttpClientHandler
+            {
+                // Set the ServerCertificateCustomValidationCallback to always return true
+                ServerCertificateCustomValidationCallback = (sender, cert, chain, sslPolicyErrors) => true
+            });
 
             IEnumerable<Type> implementationTypes = Assembly.GetExecutingAssembly().GetTypes()
                 .Where(t => t.GetInterfaces().Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IBaseService<>)));
@@ -65,6 +75,9 @@ namespace HelloDoc_Api.Extensions
                     .AsImplementedInterfaces()
                     .WithScopedLifetime();
             });
+
+            services.AddScoped<IMailService, MailService>();
+
             services.AddHttpContextAccessor();
         }
 
@@ -73,23 +86,49 @@ namespace HelloDoc_Api.Extensions
             services.AddCors(options =>
             {
                 options.AddPolicy(SystemConstants.CORS_POLICY,
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder.WithOrigins("http://localhost:4200")
                     .AllowAnyMethod()
                     .AllowAnyHeader()
+                    .AllowCredentials()
                 );
             });
         }
-
         public static void ConfigureSwagger(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HelloDoc", Version = "v1" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    Title = "Bliss v1",
-                    Version = "v1"
+                    In = ParameterLocation.Header,
+                    Description = "Please enter token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "Bearer"
+                            }
+                        },
+                        new string[]{}
+                    }
                 });
             });
+        }
+
+        public static void RegisterMail(this IServiceCollection services, IConfiguration config)
+        {
+            services.Configure<MailSettingsDTO>(config.GetSection("MailSettings"));
+            services.AddScoped<IMailService, MailService>();
         }
     }
 }

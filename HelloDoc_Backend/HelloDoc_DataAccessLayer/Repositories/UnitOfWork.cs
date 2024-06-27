@@ -6,6 +6,7 @@ namespace HelloDoc_DataAccessLayer.Repositories
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _dbContext;
+        private IUserRepository _userRepository;
 
         public UnitOfWork(AppDbContext dbContext)
         {
@@ -20,6 +21,14 @@ namespace HelloDoc_DataAccessLayer.Repositories
         public int Save() => _dbContext.SaveChanges();
 
         public Task<int> SaveAsync() => _dbContext.SaveChangesAsync();
+
+        public IUserRepository UserRepository
+        {
+            get
+            {
+                return _userRepository ??= new UserRepository(_dbContext);
+            }
+        }
 
     }
 }

@@ -10,5 +10,7 @@ namespace HelloDoc_DataAccessLayer.IRepositories
 
         Task<int> SaveAsync();
 
+        public IUserRepository UserRepository { get; }
+
     }
 }

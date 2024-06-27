@@ -1,10 +1,9 @@
 using System.Net;
-using Bliss_Common.Exceptions;
 using HelloDoc_Common.Exceptions;
 using HelloDoc_Entities.DTOs.Response;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using static HelloDoc_Common.Constants.ErrorMessages;
+using static HelloDoc_Common.Constants.MessageConstants;
 
 namespace HelloDoc_Api.Middlewares
 {
@@ -57,7 +56,7 @@ namespace HelloDoc_Api.Middlewares
                     AddStatusCodeAndMessage(customException.StatusCode, customException.Messages);
                     break;
                 default:
-                    AddStatusCodeAndMessage((int)HttpStatusCode.InternalServerError, new List<string>() { ExceptionMessage.INTERNAL_SERVER });
+                    AddStatusCodeAndMessage((int)HttpStatusCode.InternalServerError, new List<string>() { ErrorMessage.INTERNAL_SERVER });
                     break;
             }
             //for showing the same status code as of ApiResponse in Swagger

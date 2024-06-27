@@ -1,8 +1,7 @@
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using static HelloDoc_Common.Constants.ErrorMessages;
+using static HelloDoc_Common.Constants.MessageConstants;
 
-
-namespace Bliss_Common.Exceptions
+namespace HelloDoc_Common.Exceptions
 {
     public class ModelStateException : Exception
     {
@@ -10,7 +9,7 @@ namespace Bliss_Common.Exceptions
         public List<string> Messages { get; set; }
         public Dictionary<string, object>? Metadata { get; set; }
 
-        public ModelStateException(ModelStateDictionary modelState) : base(ExceptionMessage.INVALID_MODELSTATE)
+        public ModelStateException(ModelStateDictionary modelState) : base(ErrorMessage.INVALID_MODELSTATE)
         {
             Messages = GetErrorMessages(modelState);
         }

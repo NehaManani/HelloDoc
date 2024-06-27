@@ -1,3 +1,4 @@
+using HelloDoc_Entities.DataModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace HelloDoc_DataAccessLayer.Data
@@ -8,6 +9,8 @@ namespace HelloDoc_DataAccessLayer.Data
         {
 
         }
+
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
