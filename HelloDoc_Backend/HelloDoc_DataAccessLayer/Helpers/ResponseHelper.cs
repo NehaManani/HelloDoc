@@ -7,30 +7,19 @@ namespace HelloDoc_DataAccessLayer.Helpers
 {
     public class ResponseHelper
     {
-        public static IActionResult CreatedResponse<T>(bool success, string message, T? data)
+
+        public static IActionResult CreatedResponse<T>(T? data, string message, bool success)
         {
             HttpStatusCode statusCode = success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
 
-            ApiResponse<T> result = new ApiResponse<T>
+            ApiResponse<T> result = new()
             {
                 StatusCode = (int)statusCode,
                 Message = message,
                 Data = data,
-                Success = success,
-            };
-            return new ObjectResult(result) { StatusCode = (int)statusCode };
-        }
-
-        public static IActionResult SuccessResponse<T>(T? data, string message = SystemConstants.SUCCESS)
-        {
-            ApiResponse<T> result = new()
-            {
-                StatusCode = (int)HttpStatusCode.OK,
-                Message = message,
-                Data = data,
                 Success = true,
             };
-            return new ObjectResult(result) { StatusCode = (int)HttpStatusCode.OK };
+            return new ObjectResult(result) { StatusCode = (int)statusCode };
         }
 
         public static IActionResult CreatePageResponse<T>(IEnumerable<T> data, int pageNumber, int pageSize, int totalPage, long totalRecords = 0)

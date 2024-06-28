@@ -6,6 +6,7 @@ namespace HelloDoc_Common.Constants
         public static class SuccessMessage
         {
             public const string Login_SUCCESS = "Login Successful!";
+            public const string FORGET_PASSWORD_MAIL_SENT = "A mail for reset password has been sent successfully!";
 
         }
         #endregion
@@ -21,6 +22,7 @@ namespace HelloDoc_Common.Constants
             public const string INVALID_ATTEMPT = "Invalid Attempt!";
             public const string VALID_CREDENTIALS = "Please enter valid user name and password!";
             public const string INVALID_MODELSTATE = "Invalid Entry";
+            public const string USER_NOT_FOUND = "User not found";
         }
         #endregion
     }

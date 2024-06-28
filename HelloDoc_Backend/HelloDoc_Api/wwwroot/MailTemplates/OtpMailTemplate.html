@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Auth OTP</title>
+    <style>
+      /* Reset some default styles for better email rendering */
+      body,
+      div,
+      p {
+        margin: 0;
+        padding: 0;
+      }
+
+      /* Main styles for the email */
+      .email-container {
+        font-family: Arial, sans-serif;
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        background-color: #f4f4f4;
+      }
+
+      .email-header {
+        background-color: #62b9c8;
+        color: #fff;
+        text-align: center;
+        padding: 10px 0;
+      }
+
+      .email-content {
+        padding: 20px;
+        background-color: #fff;
+      }
+
+      .email-footer {
+        text-align: center;
+        padding: 10px 0;
+        color: #777;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="email-container">
+      <div class="email-header">
+        <h1>Welcome to Our Community!</h1>
+      </div>
+      <div class="email-content">
+        <p>Dear User,</p>
+        <p>
+          Here is the otp for authentication and it is valid for 10 minutes
+          only:
+        </p>
+
+        <p><strong>OTP:</strong> {otp}</p>
+
+        <p>Thank you for using our service !</p>
+      </div>
+    </div>
+    <div class="email-footer">
+      <p>This email was sent from HelloDoc.</p>
+      <p>
+        This is an auto-generated response, please do not reply to this email.
+      </p>
+    </div>
+  </body>
+</html>

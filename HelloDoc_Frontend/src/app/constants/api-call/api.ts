@@ -6,4 +6,7 @@ export class ApiCallConstant {
 
   //for authentication
   public static readonly LOGIN_URL = this.AREA_AUTHENTICATION + '/login';
+
+  public static readonly FORGOT_PASSWORD_URL =
+    this.AREA_AUTHENTICATION + '/forgot-password';
 }

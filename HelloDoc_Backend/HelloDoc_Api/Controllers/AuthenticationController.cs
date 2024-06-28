@@ -25,9 +25,16 @@ namespace HelloDoc_Api.Controllers
             if (!ModelState.IsValid)
                 throw new ModelStateException(ModelState);
 
-            IActionResult? result = await _authenticationService.Login(loginRequest);
+            string token = await _authenticationService.Login(loginRequest);
 
-            return result;
+            return ResponseHelper.CreatedResponse(token, SuccessMessage.Login_SUCCESS, true);
+        }
+
+        [HttpPost("forgot-password")]
+        public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            await _authenticationService.ForgotPassword(request.Email);
+            return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.FORGET_PASSWORD_MAIL_SENT, true);
         }
     }
 }

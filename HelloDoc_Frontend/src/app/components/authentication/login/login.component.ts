@@ -7,7 +7,7 @@ import {
   FormsModule,
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { RoutingPathConstant } from '../../../constants/routing/routing-path';
 import { ValidationMessageConstant } from '../../../constants/validation/validation-message';
 import { ValidationPattern } from '../../../constants/validation/validation-pattern';
@@ -17,6 +17,7 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { LoginService } from '../../../services/authentication/login.service';
 import { ILogin } from '../../../models/Ilogin';
 import { AuthService } from '../../../services/authentication/auth.service';
+import { NotificationService } from '../../../shared/services/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ import { AuthService } from '../../../services/authentication/auth.service';
     CommonModule,
     FormsModule,
     ButtonComponent,
+    RouterModule,
   ],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss',
@@ -57,6 +59,8 @@ export class LoginComponent {
 
   constructor(
     private loginService: LoginService,
+
+    private notificationService: NotificationService,
     private authService: AuthService,
     private titleService: Title,
     private router: Router
@@ -92,16 +96,14 @@ export class LoginComponent {
             const userId = this.authService.getUserId() || '';
             console.log(userId);
 
-            // this.notificationService.success(
-            //   NotificationMessageConstant.loginSuccessful
-            // );
+            this.notificationService.success(response.message);
           }
         },
         error: (error) => {
-          // this.notificationService.error(
-          //   NotificationMessageConstant.validCredentials
-          // );
-          console.log(error.error.message);
+          console.log(error);
+          console.log(error.error.messages);
+
+          this.notificationService.error(error.error.messages);
         },
       });
   }
