@@ -53,39 +53,60 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
         public async Task SendOtp(string email)
         {
-            try
+            User? user = await GetUserByEmailAsync(email);
+            if (user != null)
             {
-                User? user = await GetUserByEmailAsync(email);
-                if (user != null)
-                {
-                    //generate a random number of six digit OTP
-                    Random generator = new Random();
-                    user.OTP = generator.Next(100000, 999999).ToString();
-                    user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10); // Ensure the time is in UTC
-                    await _unitOfWork.UserRepository.UpdateAsync(user);
-                    await _unitOfWork.SaveAsync();
+                //generate a random number of six digit OTP
+                Random generator = new Random();
+                user.OTP = generator.Next(100000, 999999).ToString();
+                user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10); // Ensure the time is in UTC
+                await _unitOfWork.UserRepository.UpdateAsync(user);
+                await _unitOfWork.SaveAsync();
 
-                    //sent otp in mail
-                    MailDTO mailDto = new()
-                    {
-                        ToEmail = user.Email,
-                        Subject = EmailConstants.OTP_SUBJECT,
-                        Body = MailBodyUtil.SendOtpForAuthenticationBody(user.OTP, _environment.WebRootPath)
-                    };
-                    await _mailService.SendMailAsync(mailDto);
-                }
-                else
+                //sent otp in mail
+                MailDTO mailDto = new()
                 {
-                    throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
-                }
+                    ToEmail = user.Email,
+                    Subject = EmailConstants.OTP_SUBJECT,
+                    Body = MailBodyUtil.SendOtpForAuthenticationBody(user.OTP, _environment.WebRootPath)
+                };
+                await _mailService.SendMailAsync(mailDto);
             }
-            catch (Exception ex)
+            else
             {
-                var e = ex;
-                throw ex;
+                throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
             }
         }
 
+        public async Task SubmitRegisterPatientRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest)
+        {
+            //document
+            User? user = _mapper.Map<User>(submitRegisterPatientRequest);
+            if (user != null)
+            {
+                string? hashedPassword = PasswordUtil.HashPassword(submitRegisterPatientRequest.Password);
+                user.Password = hashedPassword;
+                user.Status = 1;
+                user.Role = 2;
+            }
+
+            await _unitOfWork.UserRepository.AddAsync(user);
+            await _unitOfWork.SaveAsync();
+
+            PatientDetails? patientDetails = _mapper.Map<PatientDetails>(submitRegisterPatientRequest);
+            if (submitRegisterPatientRequest.Document != null)
+            {
+                using (var memoryStream = new MemoryStream())
+                {
+                    await submitRegisterPatientRequest.Document.CopyToAsync(memoryStream);
+                    patientDetails.Document = memoryStream.ToArray();
+                }
+            }
+            patientDetails.UserId = user.Id;
+
+            await _unitOfWork.PatientDetailsRepository.AddAsync(patientDetails);
+            await _unitOfWork.SaveAsync();
+        }
 
         #region Helper Methods
 
@@ -93,6 +114,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
         {
             return await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(user => user.Email == email);
         }
+
         #endregion
     }
 }

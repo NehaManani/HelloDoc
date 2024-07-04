@@ -34,7 +34,20 @@ namespace HelloDoc_Api.Controllers
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordRequest request)
         {
             await _authenticationService.ForgotPassword(request.Email);
+
             return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.FORGET_PASSWORD_MAIL_SENT, true);
+        }
+
+        [HttpPost]
+        [Route("submit-register-patient-request")]
+        public async Task<IActionResult> SubmitRegisterPatientRequest([FromForm] SubmitRegisterPatientRequest submitRegisterPatientRequest)
+        {
+            if (!ModelState.IsValid)
+                throw new ModelStateException(ModelState);
+
+            await _authenticationService.SubmitRegisterPatientRequest(submitRegisterPatientRequest);
+
+            return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.REGISTER_REQUEST_SENT, true);
         }
     }
 }

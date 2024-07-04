@@ -1,5 +1,6 @@
 
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using HelloDoc_Entities.Abstract;
 
 namespace HelloDoc_Entities.DataModels
@@ -18,10 +19,15 @@ namespace HelloDoc_Entities.DataModels
         [MaxLength(255)]
         public string Password { get; set; } = null!;
 
+        [MaxLength(16)]
+        public byte Role { get; set; }
+
         [StringLength(10)]
         public string? OTP { get; set; }
 
         public DateTime? OtpExpiryTime { get; set; }
+
+        public int? Gender { get; set; }
 
         [StringLength(13)]
         public string? PhoneNumber { get; set; }
@@ -36,5 +42,16 @@ namespace HelloDoc_Entities.DataModels
         public string? Address { get; set; }
 
         public byte[]? Avatar { get; set; }
+
+        public byte Status { get; set; }
+
+        [ForeignKey(nameof(Role))]
+        public virtual UserRole UserRoles { get; set; } = null!;
+
+        [ForeignKey(nameof(Status))]
+        public virtual UserStatus UserStatuses { get; set; } = null!;
+
+        [ForeignKey(nameof(Gender))]
+        public virtual Gender Genders { get; set; } = null!;
     }
 }

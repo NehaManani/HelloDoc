@@ -43,56 +43,9 @@
     *ngIf="!isDarkMode"
   />
   <img class="logo" src="assets/logo-dark.png" alt="Logo" *ngIf="isDarkMode" />
-  <div class="title_container">
-    <p class="title text-center" [ngClass]="{ 'dark-mode': isDarkMode }">
-      Login To Your Account
-    </p>
-  </div>
-  <div class="input_container">
-    <form
-      action=""
-      class="d-flex flex-column"
-      [formGroup]="loginForm"
-      (submit)="onLogin()"
-    >
-      <app-input
-        class="py-2"
-        title="Email"
-        type="email"
-        className="input_field py-2 fs-6"
-        placeholder="Email Address"
-        [parentForm]="loginForm"
-        controlName="email"
-        [validationMsg]="emailValidationMsg"
-        icon="bi-envelope"
-      ></app-input>
-      <app-input
-        class="py-2"
-        title="Password"
-        type="{{ showPassword ? 'text' : 'password' }}"
-        className="input_field py-2 fs-6"
-        placeholder="Password"
-        [parentForm]="loginForm"
-        controlName="password"
-        [validationMsg]="passwordValidationMsg"
-        (iconClick)="togglePasswordVisibility()"
-        [icon]="showPassword ? 'bi-eye-fill' : 'bi-eye-slash-fill'"
-      ></app-input>
-      <app-button
-        label="Login"
-        title="Login"
-        type="submit"
-        className="my-3 login-btn"
-      >
-      </app-button>
-      <span class="cursor-pointer text-center"
-        ><a
-          [routerLink]="['/forgot-password']"
-          class="forgot-password text-decoration-none"
-          >Forgot Password?</a
-        >
-      </span>
-    </form>
+  <div class="buttons">
+    <button class="button submit-request">Submit A Request</button>
+    <button class="button registered-patient">Registered Patients</button>
+    <button class="button admin">Admin</button>
   </div>
 </div>
-    

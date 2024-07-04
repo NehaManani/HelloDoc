@@ -1,0 +1,90 @@
+:host {
+  width: 500px;
+}
+@media screen and (max-width: 1200px) {
+  :host {
+    width: 380px;
+  }
+}
+@media screen and (max-width: 992px) {
+  :host {
+    width: 70%;
+  }
+}
+
+#switch {
+  display: none;
+}
+
+.dark-mode {
+  background-color: #333;
+  color: #fff;
+}
+.icon {
+  grid-column: 1 / 1;
+  grid-row: 1 / 1;
+  transition: transform 500ms;
+}
+
+.icon--moon,
+.icon--sun {
+  position: absolute;
+  top: 0vh;
+  right: 1vw;
+  background-color: #abdbe3;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  z-index: 1;
+  box-shadow: 0 0 50px 20px rgba(0, 0, 0, 0.1);
+}
+
+.bi-moon-fill {
+  height: 30px;
+  width: 30px;
+}
+
+.bi-sun-fill {
+  height: 30px;
+  width: 30px;
+}
+
+.buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buttons {
+  .button {
+    width: 400px;
+    height: 50px;
+    margin: 10px 0;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+}
+
+.submit-request {
+  background-color: #d4d4f9;
+  border-color: #0b0b22 !important;
+}
+
+.registered-patient {
+  background-color: #f9d4e3;
+  border-color: #e8adc4;
+}
+
+.admin {
+  background-color: #f9d4e3;
+  border-color: #e8adc4;
+}
+
+.button:hover {
+  opacity: 0.8;
+}

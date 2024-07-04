@@ -3,12 +3,14 @@ namespace HelloDoc_Common.Constants
     public class MessageConstants
     {
         #region Success_Messages
+
         public static class SuccessMessage
         {
             public const string Login_SUCCESS = "Login Successful!";
             public const string FORGET_PASSWORD_MAIL_SENT = "A mail for reset password has been sent successfully!";
-
+            public const string REGISTER_REQUEST_SENT = "Your registration request has been sent successfully!";
         }
+
         #endregion
 
         #region Error_Messages

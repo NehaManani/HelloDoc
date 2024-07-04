@@ -1,0 +1,255 @@
+<div class="container mt-5">
+  <div class="card">
+    <div class="card-header">
+      <h3>Create Provider Account</h3>
+    </div>
+    <div class="card-body">
+      <form>
+        <!-- Account Information -->
+        <div class="form-group">
+          <label for="username">User Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="username"
+            placeholder="Md.Lastname"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            type="password"
+            class="form-control"
+            id="password"
+            placeholder="Password"
+          />
+        </div>
+        <div class="form-group">
+          <label for="role">Role</label>
+          <select class="form-control" id="role">
+            <option>Select Role</option>
+            <!-- Add roles here -->
+          </select>
+        </div>
+        <!-- Administrator Information -->
+        <h5 class="mt-4">Administrator Information</h5>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="firstName">First Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="firstName"
+              placeholder="First Name"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="lastName">Last Name</label>
+            <input
+              type="text"
+              class="form-control"
+              id="lastName"
+              placeholder="Last Name"
+            />
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            class="form-control"
+            id="email"
+            placeholder="Email"
+          />
+        </div>
+        <div class="form-group">
+          <label for="phone">Phone</label>
+          <input
+            type="text"
+            class="form-control"
+            id="phone"
+            placeholder="Phone"
+          />
+        </div>
+        <div class="form-group">
+          <label for="medicalLicense">Medical License #</label>
+          <input
+            type="text"
+            class="form-control"
+            id="medicalLicense"
+            placeholder="Medical License #"
+          />
+        </div>
+        <div class="form-group">
+          <label for="npiNumber">NPI Number</label>
+          <input
+            type="text"
+            class="form-control"
+            id="npiNumber"
+            placeholder="NPI Number"
+          />
+        </div>
+        <div class="form-group">
+          <label for="state">State</label>
+          <div>
+            <label class="checkbox-inline mr-3">
+              <input type="checkbox" id="state1" value="option1" /> District Of
+              Columbia
+            </label>
+            <label class="checkbox-inline mr-3">
+              <input type="checkbox" id="state2" value="option2" /> New York
+            </label>
+            <label class="checkbox-inline mr-3">
+              <input type="checkbox" id="state3" value="option3" /> Virginia
+            </label>
+            <label class="checkbox-inline mr-3">
+              <input type="checkbox" id="state4" value="option4" /> Maryland
+            </label>
+          </div>
+        </div>
+        <!-- Mailing & Billing Information -->
+        <h5 class="mt-4">Mailing & Billing Information</h5>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="address1">Address 1</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address1"
+              placeholder="Address 1"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="address2">Address 2</label>
+            <input
+              type="text"
+              class="form-control"
+              id="address2"
+              placeholder="Address 2"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="city">City</label>
+            <input
+              type="text"
+              class="form-control"
+              id="city"
+              placeholder="City"
+            />
+          </div>
+          <div class="form-group col-md-4">
+            <label for="state">State</label>
+            <select id="state" class="form-control">
+              <option selected>Choose...</option>
+              <option>...</option>
+            </select>
+          </div>
+          <div class="form-group col-md-2">
+            <label for="zip">Zip</label>
+            <input
+              type="text"
+              class="form-control"
+              id="zip"
+              placeholder="Zip"
+            />
+          </div>
+        </div>
+        <!-- Provider Profile -->
+        <h5 class="mt-4">Provider Profile</h5>
+        <div class="form-group">
+          <label for="businessName">Business Name</label>
+          <input
+            type="text"
+            class="form-control"
+            id="businessName"
+            placeholder="Business Name"
+          />
+        </div>
+        <div class="form-group">
+          <label for="businessWebsite">Business Website</label>
+          <input
+            type="text"
+            class="form-control"
+            id="businessWebsite"
+            placeholder="Business Website"
+          />
+        </div>
+        <div class="form-group">
+          <label for="photo">Photo</label>
+          <input type="file" class="form-control-file" id="photo" />
+        </div>
+        <div class="form-group">
+          <label for="adminNotes">Admin Notes</label>
+          <textarea class="form-control" id="adminNotes" rows="3"></textarea>
+        </div>
+        <!-- Onboarding -->
+        <h5 class="mt-4">Onboarding</h5>
+        <div class="form-group">
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="contractorAgreement"
+            />
+            <label class="form-check-label" for="contractorAgreement">
+              Independent Contractor Agreement
+            </label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="contractorAgreementFile"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="backgroundCheck"
+            />
+            <label class="form-check-label" for="backgroundCheck">
+              Background Check
+            </label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="backgroundCheckFile"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="hipaaCompliance"
+            />
+            <label class="form-check-label" for="hipaaCompliance">
+              HIPAA Compliance
+            </label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="hipaaComplianceFile"
+            />
+          </div>
+          <div class="form-check">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              id="nonDisclosureAgreement"
+            />
+            <label class="form-check-label" for="nonDisclosureAgreement">
+              Non-disclosure Agreement
+            </label>
+            <input
+              type="file"
+              class="form-control-file"
+              id="nonDisclosureAgreementFile"
+            />
+          </div>
+        </div>
+        <button type="submit" class="btn btn-success">Create Account</button>
+      </form>
+    </div>
+  </div>
+</div>

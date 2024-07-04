@@ -8,5 +8,6 @@ namespace HelloDoc_BusinessAccessLayer.IServices
         Task<string> Login(LoginRequest loginRequest);
         Task ForgotPassword(string email);
         Task SendOtp(string email);
+        Task SubmitRegisterPatientRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest);
     }
 }
