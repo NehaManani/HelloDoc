@@ -25,7 +25,7 @@ namespace HelloDoc_Entities.DataModels
 
         public int? BloodTypeId { get; set; }
 
-        public byte[]? Document { get; set; }
+        public string? Document { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public User Users { get; set; } = null!;

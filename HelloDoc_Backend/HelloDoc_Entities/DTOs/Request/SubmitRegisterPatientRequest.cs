@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Http;
+using HelloDoc_Entities.DataModels;
 
 namespace HelloDoc_Entities.DTOs.Request
 {
@@ -18,6 +18,34 @@ namespace HelloDoc_Entities.DTOs.Request
         public string? Allergies { get; set; }
         public string? CurrentMedications { get; set; }
         public int? BloodTypeId { get; set; }
-        public IFormFile Document { get; set; }
+        public string? Document { get; set; }
+
+        public User ReturnPatientRequestUser(SubmitRegisterPatientRequest submitRegisterPatientRequest)
+        {
+            return new User
+            {
+                FirstName = submitRegisterPatientRequest.FirstName,
+                LastName = submitRegisterPatientRequest.LastName,
+                Email = submitRegisterPatientRequest.Email,
+                Password = submitRegisterPatientRequest.Password,
+                PhoneNumber = submitRegisterPatientRequest.PhoneNumber,
+                City = submitRegisterPatientRequest.City,
+                Zip = submitRegisterPatientRequest.Zip,
+                Address = submitRegisterPatientRequest.Address,
+            };
+        }
+
+        public PatientDetails ReturnPatientDetailsRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest)
+        {
+            return new PatientDetails
+            {
+                EmergencyContactName = submitRegisterPatientRequest.EmergencyContactName,
+                EmergencyContactNumber = submitRegisterPatientRequest.EmergencyContactNumber,
+                MedicalHistory = submitRegisterPatientRequest.MedicalHistory,
+                Allergies = submitRegisterPatientRequest.Allergies,
+                CurrentMedications = submitRegisterPatientRequest.CurrentMedications,
+                BloodTypeId = submitRegisterPatientRequest.BloodTypeId
+            };
+        }
     }
 }

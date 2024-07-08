@@ -7,5 +7,8 @@ import { SiteMainPageComponent } from './components/authentication/site-main-pag
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
+  { path: 'user-selection', component: UserSelectionComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'create-patient', component: CreatePatientComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
 ];

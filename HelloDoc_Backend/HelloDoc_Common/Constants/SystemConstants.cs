@@ -19,5 +19,7 @@ namespace HelloDoc_Common.Constants
         public const string OTP_MAIL_TEMPLATE_FILE = "OtpMailTemplate.html";
 
         public static readonly int PASSWORD_ITERATION = 10;
+
+        public static readonly int TOKEN_EXPIRE_MINUTES = 10;
     }
 }

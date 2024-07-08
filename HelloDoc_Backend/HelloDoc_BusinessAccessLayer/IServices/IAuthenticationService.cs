@@ -1,4 +1,5 @@
 using HelloDoc_Entities.DTOs.Request;
+using HelloDoc_Entities.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HelloDoc_BusinessAccessLayer.IServices
@@ -8,6 +9,7 @@ namespace HelloDoc_BusinessAccessLayer.IServices
         Task<string> Login(LoginRequest loginRequest);
         Task ForgotPassword(string email);
         Task SendOtp(string email);
+        Task<string> VerifyOtp(VerifyOtpResponse otpData);
         Task SubmitRegisterPatientRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest);
     }
 }

@@ -3,10 +3,11 @@
   <label class="label--style {{ labelClass }}">{{ label }}</label>
   }
   <input
-    #input
     appControlErrors
-    [customErrors]="customErrors"
-    [type]="type"
+    appPhoneMask
+    [customErrors]="this.customErrors"
+    #input
+    type="text"
     [class]="className"
     [formControlName]="controlName"
     [placeholder]="placeholder"
@@ -15,12 +16,9 @@
     [pattern]="pattern"
     [readonly]="readonly"
     [ngClass]="ngClass"
-    [maxlength]="maxlength"
-    [minlength]="minlength"
     [name]="name"
     [ngStyle]="styles"
     [errorTitle]="errorTitle"
-    (keyup)="onKeyUp(input.value)"
-    [attr.data-testid]="testId"
+    [maxLength]="11"
   />
 </div>

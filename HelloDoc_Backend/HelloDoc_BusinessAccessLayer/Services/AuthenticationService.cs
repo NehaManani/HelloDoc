@@ -15,6 +15,7 @@ using System.Net;
 using HelloDoc_Entities.DTOs.Common;
 using HelloDoc_Common.Constants;
 using Microsoft.AspNetCore.Http;
+using HelloDoc_Entities.DTOs.Response;
 
 namespace HelloDoc_BusinessAccessLayer.Services
 {
@@ -80,8 +81,8 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
         public async Task SubmitRegisterPatientRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest)
         {
-            //document
-            User? user = _mapper.Map<User>(submitRegisterPatientRequest);
+            User? user = submitRegisterPatientRequest.ReturnPatientRequestUser(submitRegisterPatientRequest);
+
             if (user != null)
             {
                 string? hashedPassword = PasswordUtil.HashPassword(submitRegisterPatientRequest.Password);
@@ -93,19 +94,35 @@ namespace HelloDoc_BusinessAccessLayer.Services
             await _unitOfWork.UserRepository.AddAsync(user);
             await _unitOfWork.SaveAsync();
 
-            PatientDetails? patientDetails = _mapper.Map<PatientDetails>(submitRegisterPatientRequest);
+            PatientDetails patientDetails = submitRegisterPatientRequest.ReturnPatientDetailsRequest(submitRegisterPatientRequest);
+
             if (submitRegisterPatientRequest.Document != null)
             {
-                using (var memoryStream = new MemoryStream())
-                {
-                    await submitRegisterPatientRequest.Document.CopyToAsync(memoryStream);
-                    patientDetails.Document = memoryStream.ToArray();
-                }
+                patientDetails.Document = submitRegisterPatientRequest.Document;
             }
-            patientDetails.UserId = user.Id;
 
+            patientDetails.UserId = user.Id;
             await _unitOfWork.PatientDetailsRepository.AddAsync(patientDetails);
             await _unitOfWork.SaveAsync();
+        }
+
+        public async Task<string> VerifyOtp(VerifyOtpResponse otpData)
+        {
+            User user = await GetUserByEmailAsync(otpData.Email) ?? throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
+
+            if (user.OTP != otpData.Otp) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.INVALID_OTP);
+
+            else if (user.OtpExpiryTime < DateTime.Now) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.OTP_EXPIRED);
+
+            user.OTP = null;
+            user.OtpExpiryTime = null;
+
+            string? token = EncodingMailToken(otpData.Email);
+
+            await _unitOfWork.UserRepository.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
+
+            return token;
         }
 
         #region Helper Methods
@@ -114,6 +131,10 @@ namespace HelloDoc_BusinessAccessLayer.Services
         {
             return await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(user => user.Email == email);
         }
+
+        public static string EncodingMailToken(string email) => System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(email + "&" + DateTime.UtcNow.AddMinutes(SystemConstants.TOKEN_EXPIRE_MINUTES)));
+
+        public static string DecodingMailToken(string token) => System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(token));
 
         #endregion
     }

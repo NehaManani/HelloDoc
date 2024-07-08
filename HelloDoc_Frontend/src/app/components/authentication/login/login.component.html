@@ -63,8 +63,6 @@
         placeholder="Email Address"
         [parentForm]="loginForm"
         controlName="email"
-        [validationMsg]="emailValidationMsg"
-        icon="bi-envelope"
       ></app-input>
       <app-input
         class="py-2"
@@ -74,15 +72,13 @@
         placeholder="Password"
         [parentForm]="loginForm"
         controlName="password"
-        [validationMsg]="passwordValidationMsg"
         (iconClick)="togglePasswordVisibility()"
-        [icon]="showPassword ? 'bi-eye-fill' : 'bi-eye-slash-fill'"
       ></app-input>
       <app-button
         label="Login"
         title="Login"
         type="submit"
-        className="my-3 login-btn"
+        className="my-3 common-btn"
       >
       </app-button>
       <span class="cursor-pointer text-center"
@@ -95,4 +91,3 @@
     </form>
   </div>
 </div>
-    

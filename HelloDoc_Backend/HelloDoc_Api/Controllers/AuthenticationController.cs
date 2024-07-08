@@ -2,6 +2,7 @@ using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_Common.Exceptions;
 using HelloDoc_DataAccessLayer.Helpers;
 using HelloDoc_Entities.DTOs.Request;
+using HelloDoc_Entities.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 using static HelloDoc_Common.Constants.MessageConstants;
 
@@ -38,6 +39,15 @@ namespace HelloDoc_Api.Controllers
             return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.FORGET_PASSWORD_MAIL_SENT, true);
         }
 
+        [HttpPost("verify-otp")]
+        public async Task<IActionResult> VerifyOTP(VerifyOtpResponse verifyOtpResponse)
+        {
+            if (!ModelState.IsValid)
+                throw new ModelStateException(ModelState);
+
+            var response = await _authenticationService.VerifyOtp(verifyOtpResponse);
+            return ResponseHelper.CreatedResponse(response, SuccessMessage.OTP_VERIFIED, true);
+        }
         [HttpPost]
         [Route("submit-register-patient-request")]
         public async Task<IActionResult> SubmitRegisterPatientRequest([FromForm] SubmitRegisterPatientRequest submitRegisterPatientRequest)

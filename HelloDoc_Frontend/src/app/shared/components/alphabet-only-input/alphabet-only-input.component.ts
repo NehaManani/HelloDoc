@@ -1,16 +1,22 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { ReactiveFormsModule, FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ControlErrorsDirective } from '../../../directives/control-errors.directive';
+import { AlphabetOnlyDirective } from '../../../directives/alphabet-only.directive';
 
 @Component({
-  selector: 'app-input',
+  selector: 'app-alphabet-only-input',
   standalone: true,
-  imports: [ControlErrorsDirective, ReactiveFormsModule, CommonModule],
-  templateUrl: './input.component.html',
-  styleUrl: './input.component.scss',
+  imports: [
+    ControlErrorsDirective,
+    ReactiveFormsModule,
+    CommonModule,
+    AlphabetOnlyDirective,
+  ],
+  templateUrl: './alphabet-only-input.component.html',
+  styleUrl: './alphabet-only-input.component.scss',
 })
-export class InputComponent {
+export class AlphabetOnlyInputComponent {
   @Input() label!: string;
   @Input() labelClass: string = '';
   @Input() title!: string;

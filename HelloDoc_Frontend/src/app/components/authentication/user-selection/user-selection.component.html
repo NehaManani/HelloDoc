@@ -3,7 +3,11 @@
     <h1>I am a...</h1>
   </div>
   <div class="buttons">
-    <button class="button patient">PATIENT</button>
-    <button class="button provider">PROVIDER</button>
+    <button [routerLink]="['/create-patient']" class="button patient">
+      PATIENT
+    </button>
+    <button [routerLink]="['/user-selection']" class="button provider">
+      PROVIDER
+    </button>
   </div>
 </div>

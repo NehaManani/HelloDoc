@@ -15,7 +15,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { LoginService } from '../../../services/authentication/login.service';
-import { ILogin } from '../../../models/Ilogin';
+import { ILogin } from '../../../models/request/Ilogin';
 import { AuthService } from '../../../services/authentication/auth.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 

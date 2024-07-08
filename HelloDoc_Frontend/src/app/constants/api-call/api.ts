@@ -9,4 +9,7 @@ export class ApiCallConstant {
 
   public static readonly FORGOT_PASSWORD_URL =
     this.AREA_AUTHENTICATION + '/forgot-password';
+
+  public static readonly SUBMIT_REGISTER_PATIENT_REQUEST =
+    this.AREA_AUTHENTICATION + '/submit-register-patient-request';
 }

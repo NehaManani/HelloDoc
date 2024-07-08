@@ -1,254 +1,250 @@
 <div class="container mt-5">
-  <div class="card">
+  <div class="d-flex justify-content-end">
+    <app-button
+      [routerLink]="['/user-selection']"
+      label="Back"
+      title="Back"
+      type="button"
+      className="my-3 ps-2 pe-3 common-btn"
+      iconClass="bi bi-chevron-left"
+    >
+    </app-button>
+  </div>
+  <div class="card mb-5">
     <div class="card-header">
-      <h3>Create Provider Account</h3>
+      <h3 class="create-patient-heading">Create Patient Account</h3>
     </div>
-    <div class="card-body">
-      <form>
-        <!-- Account Information -->
-        <div class="form-group">
-          <label for="username">User Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="username"
-            placeholder="Md.Lastname"
-          />
+    <div class="card-body p-4">
+      <form [formGroup]="patientInfoForm" (ngSubmit)="onSubmit()">
+        <div class="patient-information">
+          <h5>Patient Information</h5>
         </div>
-        <div class="form-group">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            class="form-control"
-            id="password"
-            placeholder="Password"
-          />
-        </div>
-        <div class="form-group">
-          <label for="role">Role</label>
-          <select class="form-control" id="role">
-            <option>Select Role</option>
-            <!-- Add roles here -->
-          </select>
-        </div>
-        <!-- Administrator Information -->
-        <h5 class="mt-4">Administrator Information</h5>
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="firstName">First Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="firstName"
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="First Name"
+              controlName="firstName"
+              [parentForm]="patientInfoForm"
+              className="app-input"
               placeholder="First Name"
+              type="text"
+              errorTitle="First Name"
+              testId="firstName"
             />
           </div>
-          <div class="form-group col-md-6">
-            <label for="lastName">Last Name</label>
-            <input
-              type="text"
-              class="form-control"
-              id="lastName"
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="Last Name"
+              controlName="lastName"
+              [parentForm]="patientInfoForm"
+              className="app-input"
               placeholder="Last Name"
+              type="text"
+              errorTitle="Last Name"
+              testId="firstName"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Email"
+              controlName="email"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Email"
+              type="email"
+              errorTitle="Email"
+              testId="email"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Password"
+              controlName="password"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Password"
+              type="text"
+              errorTitle="Password"
+              testId="password"
             />
           </div>
         </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input
-            type="email"
-            class="form-control"
-            id="email"
-            placeholder="Email"
-          />
-        </div>
-        <div class="form-group">
-          <label for="phone">Phone</label>
-          <input
-            type="text"
-            class="form-control"
-            id="phone"
-            placeholder="Phone"
-          />
-        </div>
-        <div class="form-group">
-          <label for="medicalLicense">Medical License #</label>
-          <input
-            type="text"
-            class="form-control"
-            id="medicalLicense"
-            placeholder="Medical License #"
-          />
-        </div>
-        <div class="form-group">
-          <label for="npiNumber">NPI Number</label>
-          <input
-            type="text"
-            class="form-control"
-            id="npiNumber"
-            placeholder="NPI Number"
-          />
-        </div>
-        <div class="form-group">
-          <label for="state">State</label>
-          <div>
-            <label class="checkbox-inline mr-3">
-              <input type="checkbox" id="state1" value="option1" /> District Of
-              Columbia
-            </label>
-            <label class="checkbox-inline mr-3">
-              <input type="checkbox" id="state2" value="option2" /> New York
-            </label>
-            <label class="checkbox-inline mr-3">
-              <input type="checkbox" id="state3" value="option3" /> Virginia
-            </label>
-            <label class="checkbox-inline mr-3">
-              <input type="checkbox" id="state4" value="option4" /> Maryland
-            </label>
-          </div>
-        </div>
-        <!-- Mailing & Billing Information -->
-        <h5 class="mt-4">Mailing & Billing Information</h5>
+
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="address1">Address 1</label>
-            <input
+          <div class="form-group col-md-6 mt-3">
+            <app-phone-number-input
+              label="Phone Number"
+              errorTitle="Phone Number"
+              placeholder="Phone Number"
+              [parentForm]="patientInfoForm"
+              controlName="phoneNumber"
               type="text"
-              class="form-control"
-              id="address1"
-              placeholder="Address 1"
+              className="app-input"
             />
           </div>
-          <div class="form-group col-md-6">
-            <label for="address2">Address 2</label>
-            <input
-              type="text"
-              class="form-control"
-              id="address2"
-              placeholder="Address 2"
+          <div class="form-group col-md-6 mt-3">
+            <app-select
+              label="Gender"
+              [options]="genderOptions"
+              controlName="gender"
+              [parentForm]="patientInfoForm"
+              placeholder="Select Gender"
+              className="app-select"
+              errorTitle="Gender"
             />
           </div>
+        </div>
+
+        <!-- Patient Location -->
+
+        <div class="patient-location mt-4">
+          <h5>Patient Location</h5>
         </div>
         <div class="form-row">
-          <div class="form-group col-md-6">
-            <label for="city">City</label>
-            <input
-              type="text"
-              class="form-control"
-              id="city"
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="City"
+              controlName="city"
+              [parentForm]="patientInfoForm"
+              className="app-input"
               placeholder="City"
-            />
-          </div>
-          <div class="form-group col-md-4">
-            <label for="state">State</label>
-            <select id="state" class="form-control">
-              <option selected>Choose...</option>
-              <option>...</option>
-            </select>
-          </div>
-          <div class="form-group col-md-2">
-            <label for="zip">Zip</label>
-            <input
               type="text"
-              class="form-control"
-              id="zip"
-              placeholder="Zip"
+              errorTitle="City"
+              testId="City"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Zip"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Enter Zip"
+              errorTitle="Zip"
+              controlName="zip"
+              class="w-100"
+              [maxlength]="6"
+            />
+          </div>
+          <div class="form-group col-md-12 mt-3">
+            <app-textarea
+              label="Address"
+              placeholder="Address"
+              controlName="address"
+              [parentForm]="patientInfoForm"
+              className="app-textarea title-description"
+              errorTitle="Address"
+              testId="address"
             />
           </div>
         </div>
-        <!-- Provider Profile -->
-        <h5 class="mt-4">Provider Profile</h5>
-        <div class="form-group">
-          <label for="businessName">Business Name</label>
-          <input
-            type="text"
-            class="form-control"
-            id="businessName"
-            placeholder="Business Name"
-          />
+
+        <!-- Other Details -->
+
+        <div class="patient-location mt-4">
+          <h5>Other Details</h5>
         </div>
-        <div class="form-group">
-          <label for="businessWebsite">Business Website</label>
-          <input
-            type="text"
-            class="form-control"
-            id="businessWebsite"
-            placeholder="Business Website"
-          />
-        </div>
-        <div class="form-group">
-          <label for="photo">Photo</label>
-          <input type="file" class="form-control-file" id="photo" />
-        </div>
-        <div class="form-group">
-          <label for="adminNotes">Admin Notes</label>
-          <textarea class="form-control" id="adminNotes" rows="3"></textarea>
-        </div>
-        <!-- Onboarding -->
-        <h5 class="mt-4">Onboarding</h5>
-        <div class="form-group">
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="contractorAgreement"
+        <div class="form-row">
+          <div class="form-group col-md-6 mt-3">
+            <app-select
+              label="Blood Type"
+              [options]="bloodTypeOptions"
+              controlName="bloodTypeId"
+              [parentForm]="patientInfoForm"
+              placeholder="Select Blood Type"
+              className="app-select"
+              errorTitle="Me tera khoon pi jaungi"
             />
-            <label class="form-check-label" for="contractorAgreement">
-              Independent Contractor Agreement
-            </label>
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <label class="label--style">Document</label>
             <input
               type="file"
-              class="form-control-file"
-              id="contractorAgreementFile"
+              (change)="handlePictureFileChange($event)"
+              #photoInput
+              id="photoInput"
+              accept="image/*"
+              class="app-input"
+              formControlName="document"
             />
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="backgroundCheck"
-            />
-            <label class="form-check-label" for="backgroundCheck">
-              Background Check
-            </label>
-            <input
-              type="file"
-              class="form-control-file"
-              id="backgroundCheckFile"
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="Emergency Contact Name"
+              controlName="emergencyContactName"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Emergency Contact Name"
+              type="text"
+              errorTitle="Emergency Contact Name"
+              testId="emergencyContactName"
             />
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="hipaaCompliance"
-            />
-            <label class="form-check-label" for="hipaaCompliance">
-              HIPAA Compliance
-            </label>
-            <input
-              type="file"
-              class="form-control-file"
-              id="hipaaComplianceFile"
+          <div class="form-group col-md-6 mt-3">
+            <app-phone-number-input
+              label="Emergency Contact Number"
+              errorTitle="Emergency Contact Number"
+              placeholder="Emergency Contact Number"
+              [parentForm]="patientInfoForm"
+              controlName="phoneNumber"
+              type="text"
+              className="app-input"
             />
           </div>
-          <div class="form-check">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              id="nonDisclosureAgreement"
+          <div class="form-group col-md-12 mt-3">
+            <app-textarea
+              label="Medical History"
+              controlName="medicalHistory"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Medical History"
+              type="text"
+              errorTitle="Medical History"
+              testId="medicalHistory"
             />
-            <label class="form-check-label" for="nonDisclosureAgreement">
-              Non-disclosure Agreement
-            </label>
-            <input
-              type="file"
-              class="form-control-file"
-              id="nonDisclosureAgreementFile"
+          </div>
+          <div class="form-group col-md-12 mt-3">
+            <app-textarea
+              label="Allergies"
+              controlName="allergies"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Allergies"
+              type="text"
+              errorTitle="Allergies"
+              testId="allergies"
+            />
+          </div>
+          <div class="form-group col-md-12 mt-3">
+            <app-textarea
+              label="Current Medications (Symptoms)"
+              controlName="currentMedications"
+              [parentForm]="patientInfoForm"
+              className="app-input"
+              placeholder="Current Medications"
+              type="text"
+              errorTitle="Current Medications"
+              testId="currentMedications"
             />
           </div>
         </div>
-        <button type="submit" class="btn btn-success">Create Account</button>
+
+        <div class="d-flex justify-content-end gap-3">
+          <app-button
+            label="Submit"
+            title="Submit"
+            type="Submit"
+            className="mt-3 px-3 common-btn"
+          >
+          </app-button>
+          <app-button
+            [routerLink]="['/user-selection']"
+            label="cancel"
+            title="cancel"
+            type="button"
+            className="mt-3 px-3 cancel-btn common-btn"
+          >
+          </app-button>
+        </div>
       </form>
     </div>
   </div>

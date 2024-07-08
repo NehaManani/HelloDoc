@@ -44,8 +44,14 @@
   />
   <img class="logo" src="assets/logo-dark.png" alt="Logo" *ngIf="isDarkMode" />
   <div class="buttons">
-    <button class="button submit-request">Submit A Request</button>
-    <button class="button registered-patient">Registered Patients</button>
-    <button class="button admin">Admin</button>
+    <button
+      [routerLink]="['/user-selection']"
+      class="button submit-request text-white"
+    >
+      Submit A Request
+    </button>
+    <button [routerLink]="['/login']" class="button login text-white">
+      Login
+    </button>
   </div>
 </div>
