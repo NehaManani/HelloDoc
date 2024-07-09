@@ -10,6 +10,7 @@ namespace HelloDoc_Common.Constants
             public const string FORGET_PASSWORD_MAIL_SENT = "A mail for reset password has been sent successfully!";
             public const string REGISTER_REQUEST_SENT = "Your registration request has been sent successfully!";
             public const string OTP_VERIFIED = "Otp verified successfully!";
+            public const string OTP_SENT = "OTP has been sent to your registered email.";
         }
 
         #endregion
@@ -28,6 +29,7 @@ namespace HelloDoc_Common.Constants
             public const string USER_NOT_FOUND = "User not found";
             public const string INVALID_OTP = "Invalid OTP!";
             public const string OTP_EXPIRED = "Your OTP has expired! Try resending the OTP again.";
+            public const string EMAIL_ALREADY_EXIST = "Email already exists.";
         }
         #endregion
     }

@@ -1,21 +1,18 @@
-using Microsoft.AspNetCore.Hosting;
+using System.Net;
 using AutoMapper;
+using HelloDoc_Common.Utils;
+using Microsoft.AspNetCore.Http;
+using HelloDoc_Common.Constants;
+using HelloDoc_Common.Exceptions;
+using Microsoft.AspNetCore.Hosting;
+using HelloDoc_Entities.DataModels;
+using HelloDoc_Entities.DTOs.Common;
+using HelloDoc_Entities.DTOs.Request;
+using HelloDoc_Entities.DTOs.Response;
+using HelloDoc_BusinessAccessLayer.Helpers;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_DataAccessLayer.IRepositories;
-using HelloDoc_BusinessAccessLayer.Helpers;
-using HelloDoc_Entities.DataModels;
-using HelloDoc_Common.Utils;
-using HelloDoc_Entities.DTOs.Request;
-using HelloDoc_DataAccessLayer.Helpers;
 using static HelloDoc_Common.Constants.MessageConstants;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http.Features;
-using HelloDoc_Common.Exceptions;
-using System.Net;
-using HelloDoc_Entities.DTOs.Common;
-using HelloDoc_Common.Constants;
-using Microsoft.AspNetCore.Http;
-using HelloDoc_Entities.DTOs.Response;
 
 namespace HelloDoc_BusinessAccessLayer.Services
 {
@@ -43,8 +40,9 @@ namespace HelloDoc_BusinessAccessLayer.Services
             if (user == null || !PasswordUtil.VerifyPassword(loginRequest.Password, user.Password))
                 throw new CustomException((int)HttpStatusCode.NotFound, ErrorMessage.VALID_CREDENTIALS);
 
-            string? token = _jwtTokenHelper.GenerateJwtToken(user) ?? throw new Exception(ErrorMessage.INVALID_ATTEMPT); ;
-            return token;
+            await SendOtp(user.Email);
+
+            return user.FirstName;
         }
 
         public async Task ForgotPassword(string email)
@@ -79,27 +77,24 @@ namespace HelloDoc_BusinessAccessLayer.Services
             }
         }
 
-        public async Task SubmitRegisterPatientRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest)
+        public async Task RegisterPatientRequest(RegisterPatientRequest registerPatientRequest)
         {
-            User? user = submitRegisterPatientRequest.ReturnPatientRequestUser(submitRegisterPatientRequest);
+            User? user = registerPatientRequest.ReturnPatientRequestUser(registerPatientRequest);
+
+            if (await _unitOfWork.UserRepository.AnyAsync(u => u.Email == user.Email))
+                throw new CustomException(StatusCodes.Status409Conflict, ErrorMessage.EMAIL_ALREADY_EXIST);
 
             if (user != null)
             {
-                string? hashedPassword = PasswordUtil.HashPassword(submitRegisterPatientRequest.Password);
+                string? hashedPassword = PasswordUtil.HashPassword(registerPatientRequest.Password);
                 user.Password = hashedPassword;
                 user.Status = 1;
                 user.Role = 2;
+                await _unitOfWork.UserRepository.AddAsync(user);
+                await _unitOfWork.SaveAsync();
             }
 
-            await _unitOfWork.UserRepository.AddAsync(user);
-            await _unitOfWork.SaveAsync();
-
-            PatientDetails patientDetails = submitRegisterPatientRequest.ReturnPatientDetailsRequest(submitRegisterPatientRequest);
-
-            if (submitRegisterPatientRequest.Document != null)
-            {
-                patientDetails.Document = submitRegisterPatientRequest.Document;
-            }
+            PatientDetails patientDetails = registerPatientRequest.ReturnPatientDetailsRequest(registerPatientRequest);
 
             patientDetails.UserId = user.Id;
             await _unitOfWork.PatientDetailsRepository.AddAsync(patientDetails);
@@ -112,17 +107,41 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
             if (user.OTP != otpData.Otp) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.INVALID_OTP);
 
-            else if (user.OtpExpiryTime < DateTime.Now) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.OTP_EXPIRED);
+            else if (user.OtpExpiryTime < DateTime.UtcNow) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.OTP_EXPIRED);
 
             user.OTP = null;
             user.OtpExpiryTime = null;
 
-            string? token = EncodingMailToken(otpData.Email);
+            string? token = _jwtTokenHelper.GenerateJwtToken(user) ?? throw new Exception(ErrorMessage.INVALID_ATTEMPT);
 
             await _unitOfWork.UserRepository.UpdateAsync(user);
             await _unitOfWork.SaveAsync();
 
             return token;
+        }
+
+        public async Task RegisterProviderRequest(RegisterProviderRequest registerProviderRequest)
+        {
+            User? user = registerProviderRequest.ReturnProviderRequestUser(registerProviderRequest);
+
+            if (await _unitOfWork.UserRepository.AnyAsync(u => u.Email == user.Email))
+                throw new CustomException(StatusCodes.Status409Conflict, ErrorMessage.EMAIL_ALREADY_EXIST);
+
+            if (user != null)
+            {
+                string? hashedPassword = PasswordUtil.HashPassword(registerProviderRequest.Password);
+                user.Password = hashedPassword;
+                user.Status = 1;
+                user.Role = 2;
+                await _unitOfWork.UserRepository.AddAsync(user);
+                await _unitOfWork.SaveAsync();
+            }
+
+            ProviderDetails providerDetails = registerProviderRequest.ReturnProviderDetailsRequest(registerProviderRequest);
+
+            providerDetails.UserId = user.Id;
+            await _unitOfWork.ProviderDetailsRepository.AddAsync(providerDetails);
+            await _unitOfWork.SaveAsync();
         }
 
         #region Helper Methods

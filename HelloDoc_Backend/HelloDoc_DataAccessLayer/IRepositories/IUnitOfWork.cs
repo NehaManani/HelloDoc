@@ -13,5 +13,7 @@ namespace HelloDoc_DataAccessLayer.IRepositories
         public IUserRepository UserRepository { get; }
 
         public IPatientDetailsRepository PatientDetailsRepository { get; }
+
+        public IProviderDetailsRepository ProviderDetailsRepository { get; }
     }
 }

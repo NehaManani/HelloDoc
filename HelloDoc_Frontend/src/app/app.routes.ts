@@ -1,14 +1,16 @@
 import { Routes } from '@angular/router';
-import { LoginComponent } from './components/authentication/login/login.component';
-import { ForgotPasswordComponent } from './components/authentication/forgot-password/forgot-password.component';
-import { CreatePatientComponent } from './components/authentication/create-patient/create-patient.component';
-import { UserSelectionComponent } from './components/authentication/user-selection/user-selection.component';
-import { SiteMainPageComponent } from './components/authentication/site-main-page/site-main-page.component';
+import { CreatePatientComponent } from './pages/authentication/create-patient/create-patient.component';
+import { ForgotPasswordComponent } from './pages/authentication/forgot-password/forgot-password.component';
+import { LoginComponent } from './pages/authentication/login/login.component';
+import { SiteMainPageComponent } from './pages/authentication/site-main-page/site-main-page.component';
+import { UserSelectionComponent } from './pages/authentication/user-selection/user-selection.component';
+import { VerifyOtpComponent } from './pages/authentication/verify-otp/verify-otp.component';
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
   { path: 'user-selection', component: UserSelectionComponent },
   { path: 'login', component: LoginComponent },
+  { path: 'verify-otp', component: VerifyOtpComponent },
   { path: 'create-patient', component: CreatePatientComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
 ];

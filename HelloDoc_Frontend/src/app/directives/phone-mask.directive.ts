@@ -38,7 +38,5 @@ export class PhoneMaskDirective {
 
     // Set the formatted value to the input
     this.ngControl?.valueAccessor?.writeValue(newVal);
-
-    console.log(newVal);
   }
 }

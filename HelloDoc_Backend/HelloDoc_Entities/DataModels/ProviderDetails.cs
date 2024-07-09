@@ -19,25 +19,25 @@ namespace HelloDoc_Entities.DataModels
 
         public string? BusinessWebsite { get; set; }
 
-        public byte[]? Document { get; set; }
+        public string? Document { get; set; }
 
         public string? AdminNotes { get; set; }
 
         public bool ContractorAgreement { get; set; }
 
-        public byte[]? ContractorDocument { get; set; }
+        public string? ContractorDocument { get; set; }
 
         public bool BackgroundCheck { get; set; }
 
-        public byte[]? BackgroundCheckDocument { get; set; }
+        public string? BackgroundCheckDocument { get; set; }
 
         public bool HipaaCompliance { get; set; }
 
-        public byte[]? HipaaComplianceDocument { get; set; }
+        public string? HipaaComplianceDocument { get; set; }
 
         public bool NonDisclosureAgreement { get; set; }
 
-        public byte[]? NonDisclosureDocument { get; set; }
+        public string? NonDisclosureDocument { get; set; }
 
         [ForeignKey(nameof(UserId))]
         public User Users { get; set; } = null!;

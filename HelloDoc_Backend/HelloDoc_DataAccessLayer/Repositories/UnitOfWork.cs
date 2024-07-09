@@ -8,6 +8,7 @@ namespace HelloDoc_DataAccessLayer.Repositories
         private readonly AppDbContext _dbContext;
         private IUserRepository _userRepository;
         private IPatientDetailsRepository _patientDetailsRepository;
+        private IProviderDetailsRepository _providerDetailsRepository;
 
         public UnitOfWork(AppDbContext dbContext)
         {
@@ -36,6 +37,14 @@ namespace HelloDoc_DataAccessLayer.Repositories
             get
             {
                 return _patientDetailsRepository ??= new PatientDetailsRepository(_dbContext);
+            }
+        }
+
+        public IProviderDetailsRepository ProviderDetailsRepository
+        {
+            get
+            {
+                return _providerDetailsRepository ??= new ProviderDetailsRepository(_dbContext);
             }
         }
     }

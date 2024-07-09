@@ -7,4 +7,6 @@ export class ValidationPattern {
   public static names = /^[a-zA-Z\s]+$/;
   public static link = /^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w- .\/?%&=]*)?$/;
   public static number = /[0-9]/;
+
+  public static otp = /^[0-9]{6}$/;
 }

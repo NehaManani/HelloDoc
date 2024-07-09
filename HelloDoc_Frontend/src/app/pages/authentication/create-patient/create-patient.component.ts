@@ -19,6 +19,8 @@ import { SelectComponent } from '../../../shared/components/select/select.compon
 import { DropdownItem } from '../../../shared/models/dropdown-item';
 import { CreatePatientService } from '../../../services/authentication/create-patient.service';
 import { NotificationService } from '../../../shared/services/notification.service';
+import { IResponse } from '../../../models/response/IResponse';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-create-patient',
@@ -39,15 +41,15 @@ import { NotificationService } from '../../../shared/services/notification.servi
   styleUrl: './create-patient.component.scss',
 })
 export class CreatePatientComponent {
-  property: string | ArrayBuffer | null = '';
-  patientInfoFormInterface: IPatientInfoForm = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    password: '',
-    phoneNumber: '',
-    gender: '',
-  };
+  uploadedDocument: string | ArrayBuffer | null = '';
+  // patientInfoFormInterface: IPatientInfoForm = {
+  //   firstName: '',
+  //   lastName: '',
+  //   email: '',
+  //   password: '',
+  //   phoneNumber: '',
+  //   gender: '',
+  // };
   @ViewChild('photoInput') photoInput!: ElementRef;
   genderOptions: DropdownItem[] = [
     { value: 1, viewValue: 'Male' },
@@ -135,29 +137,30 @@ export class CreatePatientComponent {
     reader.onload = () => {
       console.log(reader.result);
       this.patientInfoForm.value.document = reader.result;
-      this.property = reader.result;
+      this.uploadedDocument = reader.result;
     };
   }
 
   onSubmit() {
     this.patientInfoForm.markAllAsTouched();
-    if (this.patientInfoForm.valid)
-      this.patientInfoForm.value.document = this.property;
-    this.createPatientService
-      .SubmitRegisterPatientRequest(this.patientInfoForm.value)
-      .subscribe({
-        next: (response: any) => {
-          if (response.success) {
-            console.log(response);
-            this.notificationService.success(response.message);
-          }
-        },
-        error: (error: any) => {
-          console.log(error);
-          console.log(error.error.messages);
-
-          this.notificationService.error(error.error.messages);
-        },
-      });
+    if (this.patientInfoForm.valid) {
+      this.patientInfoForm.value.document = this.uploadedDocument;
+      this.createPatientService
+        .SubmitRegisterPatientRequest(
+          this.patientInfoForm.value as IPatientInfoForm
+        )
+        .subscribe({
+          next: (response: IResponse<null>) => {
+            if (response.success) {
+              console.log(response);
+              this.notificationService.success(response.message);
+            }
+          },
+          error: (error: HttpErrorResponse) => {
+            console.log(error);
+            this.notificationService.error(error.error.messages);
+          },
+        });
+    }
   }
 }

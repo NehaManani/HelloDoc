@@ -4,10 +4,10 @@ using HelloDoc_Entities.DataModels;
 
 namespace HelloDoc_DataAccessLayer.Repositories
 {
-    public class PatientDetailsRepository : BaseRepository<PatientDetails>, IPatientDetailsRepository
+    public class ProviderDetailsRepository : BaseRepository<ProviderDetails>, IProviderDetailsRepository
     {
         public new readonly AppDbContext _dbContext;
-        public PatientDetailsRepository(AppDbContext dbContext) : base(dbContext)
+        public ProviderDetailsRepository(AppDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

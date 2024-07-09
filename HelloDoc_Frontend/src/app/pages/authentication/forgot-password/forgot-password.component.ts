@@ -15,6 +15,9 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { ForgotPasswordService } from '../../../services/authentication/forgot-password.service';
+import { NotificationService } from '../../../shared/services/notification.service';
+import { HttpErrorResponse } from '@angular/common/http';
+import { IResponse } from '../../../models/response/IResponse';
 
 @Component({
   selector: 'app-forgot-password',
@@ -32,8 +35,7 @@ import { ForgotPasswordService } from '../../../services/authentication/forgot-p
 })
 export class ForgotPasswordComponent {
   isDarkMode: boolean = false;
-  emailValidationMsg: string = ValidationMessageConstant.email;
-  loginUrl: string = RoutingPathConstant.loginUrl;
+
   forgotPasswordForm = new FormGroup({
     email: new FormControl(
       '',
@@ -43,13 +45,12 @@ export class ForgotPasswordComponent {
       ])
     ),
   });
-  authService: any;
-  notificationService: any;
 
   constructor(
     private titleService: Title,
     private router: Router,
-    private forgotPasswordService: ForgotPasswordService
+    private forgotPasswordService: ForgotPasswordService,
+    private notificationService: NotificationService
   ) {}
 
   ngOnInit() {
@@ -68,17 +69,15 @@ export class ForgotPasswordComponent {
       this.forgotPasswordService
         .forgotPassword(<string>this.forgotPasswordForm.value.email)
         .subscribe({
-          next: (response: any) => {
+          next: (response: IResponse<null>) => {
             if (response.success) {
-              console.log(response);
               this.notificationService.success(response.message);
             }
           },
-          error: (error: any) => {
-            console.log(error);
+          error: (error: HttpErrorResponse) => {
             this.notificationService.error(error.error.messages);
           },
         });
     }
-  } 
+  }
 }

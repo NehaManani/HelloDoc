@@ -10,6 +10,7 @@ namespace HelloDoc_BusinessAccessLayer.IServices
         Task ForgotPassword(string email);
         Task SendOtp(string email);
         Task<string> VerifyOtp(VerifyOtpResponse otpData);
-        Task SubmitRegisterPatientRequest(SubmitRegisterPatientRequest submitRegisterPatientRequest);
+        Task RegisterPatientRequest(RegisterPatientRequest registerPatientRequest);
+        Task RegisterProviderRequest(RegisterProviderRequest registerProviderRequest);
     }
 }
