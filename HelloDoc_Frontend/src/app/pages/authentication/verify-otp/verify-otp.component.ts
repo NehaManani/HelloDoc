@@ -33,6 +33,7 @@ import { IResponse } from '../../../models/response/IResponse';
 })
 export class VerifyOtpComponent {
   email: string | null = null;
+  from: string | null = null;
   showPassword: boolean = false;
   isDarkMode: boolean = false;
   verifyOtpForm = new FormGroup({
@@ -49,7 +50,7 @@ export class VerifyOtpComponent {
 
   constructor(
     private activatedRoute: ActivatedRoute,
-    private route: Router,
+    private router: Router,
     private verifyOtpService: VerifyOtpService,
     private authService: AuthService,
     private notificationService: NotificationService
@@ -58,6 +59,7 @@ export class VerifyOtpComponent {
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
       this.email = params['email'];
+      this.from = params['from'];
     });
   }
 
@@ -72,10 +74,22 @@ export class VerifyOtpComponent {
       this.verifyOtpService.verifyOtp(this.email, otpValue).subscribe({
         next: (response: IResponse<string>) => {
           console.log(response);
-          this.authService.decodeToken(response.data);
-          const userId = this.authService.getUserId() || '';
           this.notificationService.success(response.message);
-          this.route.navigate(['/create-patient']);
+          const redirectUrl =
+            this.from === 'forgot-password'
+              ? '/reset-password'
+              : '/create-patient';
+              
+          if (this.from === 'forgot-password') {
+            this.router.navigate([redirectUrl], {
+              queryParams: { email: this.email },
+            });
+          } else {
+            this.authService.decodeToken(response.data);
+            const userId = this.authService.getUserId() || '';
+            console.log(userId);
+            this.router.navigate([redirectUrl]);
+          }
         },
         error: (error: HttpErrorResponse) => {
           this.notificationService.error(error.error.messages);

@@ -12,7 +12,7 @@ import { InputComponent } from '../../../shared/components/input/input.component
 import { CommonModule } from '@angular/common';
 import { ButtonComponent } from '../../../shared/components/button/button.component';
 import { LoginService } from '../../../services/authentication/login.service';
-import { ILogin } from '../../../models/request/Ilogin';
+import { ILogin } from '../../../models/request/ILogin';
 import { AuthService } from '../../../services/authentication/auth.service';
 import { NotificationService } from '../../../shared/services/notification.service';
 import { IResponse } from '../../../models/response/IResponse';
@@ -71,7 +71,7 @@ export class LoginComponent {
           if (response.success) {
             this.notificationService.success(response.message);
             this.router.navigate(['/verify-otp'], {
-              queryParams: { email: this.loginForm.value.email },
+              queryParams: { email: this.loginForm.value.email, from: 'login' },
             });
           }
         },

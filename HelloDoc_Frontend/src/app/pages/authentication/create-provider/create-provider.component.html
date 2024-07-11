@@ -1,0 +1,406 @@
+<div class="container mt-5">
+  <div class="d-flex justify-content-end">
+    <app-button
+      [routerLink]="['/user-selection']"
+      label="Back"
+      title="Back"
+      type="button"
+      className="my-3 ps-2 pe-3 back-btn"
+      iconClass="bi bi-chevron-left"
+    >
+    </app-button>
+  </div>
+  <div class="card mb-5">
+    <div class="card-header">
+      <h3 class="create-provider-heading">Create Provider Account</h3>
+    </div>
+    <div class="card-body p-4">
+      <form
+        [formGroup]="providerInfoForm"
+        appFormSubmit
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="provider-information">
+          <h5>Provider Information</h5>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="First Name"
+              controlName="firstName"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="First Name"
+              type="text"
+              errorTitle="First Name"
+              testId="firstName"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="Last Name"
+              controlName="lastName"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Last Name"
+              type="text"
+              errorTitle="Last Name"
+              testId="firstName"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Email"
+              controlName="email"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Email"
+              type="email"
+              errorTitle="Email"
+              testId="email"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Password"
+              controlName="password"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Password"
+              type="text"
+              errorTitle="Password"
+              testId="password"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-md-6 mt-3">
+            <app-phone-number-input
+              label="Phone Number"
+              errorTitle="Phone Number"
+              placeholder="Phone Number"
+              [parentForm]="providerInfoForm"
+              controlName="phoneNumber"
+              type="text"
+              className="app-input"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-select
+              label="Gender"
+              [options]="genderOptions"
+              controlName="gender"
+              [parentForm]="providerInfoForm"
+              placeholder="Select Gender"
+              className="app-select"
+              errorTitle="Gender"
+            />
+          </div>
+        </div>
+
+        <!-- Provider Profile -->
+
+        <div class="provider-business-profile mt-4">
+          <h5>Provider Business Profile</h5>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="Business Name"
+              controlName="businessName"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Business Name"
+              type="text"
+              errorTitle="Business Name"
+              testId="businessName"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Business Website"
+              controlName="businessWebsite"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Business Website"
+              type="text"
+              errorTitle="Business Website"
+              testId="businessWebsite"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Medical License"
+              controlName="medicalLicense"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Medical License"
+              type="text"
+              errorTitle="Medical License"
+              testId="medicalLicense"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Npi Number"
+              controlName="npiNumber"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Npi Number"
+              type="text"
+              errorTitle="Npi Number"
+              testId="npiNumber"
+              [maxlength]="10"
+            />
+          </div>
+          <div class="form-group col-md-12 mt-3">
+            <label class="label--style">Document</label>
+            <input
+              type="file"
+              (change)="handleContractorAgreementFileChange($event)"
+              #photoInput
+              id="photoInput"
+              accept="image/*"
+              class="app-input"
+              formControlName="document"
+            />
+          </div>
+          <div class="form-group col-md-12 mt-3">
+            <app-textarea
+              label="Notes"
+              controlName="adminNotes"
+              [parentForm]="providerInfoForm"
+              className="app-textarea title-description"
+              placeholder="Notes"
+              errorTitle="Notes"
+              testId="notes"
+              type="text"
+            />
+          </div>
+        </div>
+
+        <!-- Provider Location -->
+
+        <div class="provider-location mt-4">
+          <h5>Provider Location</h5>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-6 mt-3">
+            <app-alphabet-only-input
+              label="City"
+              controlName="city"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="City"
+              type="text"
+              errorTitle="City"
+              testId="City"
+            />
+          </div>
+          <div class="form-group col-md-6 mt-3">
+            <app-input
+              label="Zip"
+              [parentForm]="providerInfoForm"
+              className="app-input"
+              placeholder="Enter Zip"
+              errorTitle="Zip"
+              controlName="zip"
+              class="w-100"
+              [maxlength]="6"
+            />
+          </div>
+          <div class="form-group col-md-12 mt-3">
+            <app-textarea
+              type="text"
+              label="Address"
+              placeholder="Address"
+              controlName="address"
+              [parentForm]="providerInfoForm"
+              className="app-textarea title-description"
+              errorTitle="Address"
+              testId="address"
+            />
+          </div>
+        </div>
+
+        <!-- Onboarding -->
+        <div class="provider-onboarding mt-4">
+          <h5>Onboarding</h5>
+        </div>
+        <div class="form-row">
+          <div class="form-group col-md-9 mt-3">
+            <!--  Independent Contractor  -->
+            <div
+              class="form-check d-flex justify-content-between align-items-center mb-3"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="contractorAgreement"
+                  formControlName="contractorAgreement"
+                />
+                <label class="form-check-label ms-2" for="contractorAgreement">
+                  Independent Contractor Agreement
+                </label>
+              </div>
+              <div class="upload-container">
+                <input
+                  type="file"
+                  class="form-control-file d-none"
+                  id="contractorAgreementFile"
+                  (change)="handleContractorAgreementFileChange($event)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="triggerFileInputClick('contractorAgreementFile')"
+                  [disabled]="
+                    !providerInfoForm.get('contractorAgreement')?.value
+                  "
+                >
+                  <i class="bi bi-cloud-upload"></i> Upload
+                </button>
+                @if (fileNames['contractorDocumentFileName']) {
+                <span>{{ fileNames["contractorDocumentFileName"] }}</span
+                >}
+              </div>
+            </div>
+
+            <!-- background check -->
+            <div
+              class="form-check d-flex justify-content-between align-items-center mb-3"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <input
+                  class="form-check-input mr-2"
+                  type="checkbox"
+                  id="backgroundCheck"
+                  formControlName="backgroundCheck"
+                />
+                <label class="form-check-label ms-2" for="backgroundCheck">
+                  Background Check
+                </label>
+              </div>
+              <div class="upload-container">
+                <input
+                  type="file"
+                  class="form-control-file d-none"
+                  id="backgroundCheckFile"
+                  (change)="handleBackgroundCheckFileChange($event)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="triggerFileInputClick('backgroundCheckFile')"
+                  [disabled]="!providerInfoForm.get('backgroundCheck')?.value"
+                >
+                  <i class="bi bi-cloud-upload"></i> Upload
+                </button>
+                @if (fileNames['backgroundCheckDocumentFileName']) {
+                <span>{{ fileNames["backgroundCheckDocumentFileName"] }}</span
+                >}
+              </div>
+            </div>
+
+            <!-- hipaa Compliance -->
+            <div
+              class="form-check d-flex justify-content-between align-items-center mb-3"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <input
+                  class="form-check-input mr-2"
+                  type="checkbox"
+                  id="hipaaCompliance"
+                  formControlName="hipaaCompliance"
+                />
+                <label class="form-check-label ms-2" for="hipaaCompliance">
+                  HIPAA Compliance
+                </label>
+              </div>
+              <div class="upload-container">
+                <input
+                  type="file"
+                  class="form-control-file d-none"
+                  id="hipaaComplianceFile"
+                  (change)="handleHipaaComplianceFileChange($event)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="triggerFileInputClick('hipaaComplianceFile')"
+                  [disabled]="!providerInfoForm.get('hipaaCompliance')?.value"
+                >
+                  <i class="bi bi-cloud-upload"></i> Upload
+                </button>
+                @if (fileNames['hipaaComplianceDocumentFileName']) {
+                <span>{{ fileNames["hipaaComplianceDocumentFileName"] }}</span
+                >}
+              </div>
+            </div>
+
+            <!-- Non DisclosureAgreement -->
+            <div
+              class="form-check d-flex justify-content-between align-items-center mb-3"
+            >
+              <div class="d-flex align-items-center gap-2">
+                <input
+                  class="form-check-input mr-2"
+                  type="checkbox"
+                  id="nonDisclosureAgreement"
+                  formControlName="nonDisclosureAgreement"
+                />
+                <label
+                  class="form-check-label ms-2"
+                  for="nonDisclosureAgreement"
+                >
+                  Non-disclosure Agreement
+                </label>
+              </div>
+              <div class="upload-container">
+                <input
+                  type="file"
+                  class="form-control-file d-none"
+                  id="nonDisclosureAgreementFile"
+                  (change)="handleNonDisclosureAgreementFileChange($event)"
+                />
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  (click)="triggerFileInputClick('nonDisclosureAgreementFile')"
+                  [disabled]="
+                    !providerInfoForm.get('nonDisclosureAgreement')?.value
+                  "
+                >
+                  <i class="bi bi-cloud-upload"></i> Upload
+                </button>
+                @if (fileNames['nonDisclosureDocumentFileName']) {
+                <span>{{ fileNames["nonDisclosureDocumentFileName"] }}</span
+                >}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="d-flex justify-content-end gap-3">
+          <app-button
+            label="Submit"
+            title="Submit"
+            type="Submit"
+            className="mt-3 px-3 common-btn create-provider-submit-btn"
+          >
+          </app-button>
+          <app-button
+            [routerLink]="['/user-selection']"
+            label="Cancel"
+            title="Cancel"
+            type="button"
+            className="mt-3 px-3 cancel-btn common-btn"
+          >
+          </app-button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

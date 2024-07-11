@@ -72,6 +72,12 @@ export class ForgotPasswordComponent {
           next: (response: IResponse<null>) => {
             if (response.success) {
               this.notificationService.success(response.message);
+              this.router.navigate(['/verify-otp'], {
+                queryParams: {
+                  email: this.forgotPasswordForm.value.email,
+                  from: 'forgot-password',
+                },
+              });
             }
           },
           error: (error: HttpErrorResponse) => {

@@ -5,7 +5,7 @@
       label="Back"
       title="Back"
       type="button"
-      className="my-3 ps-2 pe-3 common-btn"
+      className="my-3 ps-2 pe-3 back-btn"
       iconClass="bi bi-chevron-left"
     >
     </app-button>
@@ -15,7 +15,7 @@
       <h3 class="create-patient-heading">Create Patient Account</h3>
     </div>
     <div class="card-body p-4">
-      <form [formGroup]="patientInfoForm" (ngSubmit)="onSubmit()">
+      <form [formGroup]="patientInfoForm" appFormSubmit (ngSubmit)="onSubmit()">
         <div class="patient-information">
           <h5>Patient Information</h5>
         </div>
@@ -140,7 +140,7 @@
 
         <!-- Other Details -->
 
-        <div class="patient-location mt-4">
+        <div class="patient-other-details mt-4">
           <h5>Other Details</h5>
         </div>
         <div class="form-row">

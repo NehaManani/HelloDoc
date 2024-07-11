@@ -12,6 +12,13 @@ export class ApiCallConstant {
     this.AREA_AUTHENTICATION + '/resend-otp';
   public static readonly FORGOT_PASSWORD_URL =
     this.AREA_AUTHENTICATION + '/forgot-password';
+
+  public static readonly RESET_PASSWORD_URL =
+    this.AREA_AUTHENTICATION + '/reset-password';
+
   public static readonly SUBMIT_REGISTER_PATIENT_REQUEST =
     this.AREA_AUTHENTICATION + '/register-patient-request';
+
+  public static readonly SUBMIT_REGISTER_PROVIDER_REQUEST =
+    this.AREA_AUTHENTICATION + '/register-provider-request';
 }

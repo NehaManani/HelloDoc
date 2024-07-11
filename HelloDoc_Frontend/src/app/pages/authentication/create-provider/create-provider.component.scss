@@ -1,0 +1,48 @@
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -15px;
+  margin-left: -15px;
+}
+
+.form-group {
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.create-provider-heading {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem !important;
+}
+
+.btn-primary {
+  background-color: #00aaff;
+  border-color: #00aaff;
+}
+
+.btn-primary:hover {
+  background-color: #0088cc;
+  border-color: #0088cc;
+}
+
+.form-check-input:checked {
+  background-color: #00aaff;
+  border-color: #00aaff;
+}
+
+.upload-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 300px;
+}
+
+.upload-container button {
+  flex-shrink: 0;
+}
+
+.upload-container span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

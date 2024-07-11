@@ -1,12 +1,8 @@
-using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace HelloDoc_Entities.DTOs.Response
+namespace HelloDoc_Entities.DTOs.Request
 {
-    public class VerifyOtpResponse
+    public class VerifyOtpRequest
     {
         [Required]
         [DataType(DataType.EmailAddress)]

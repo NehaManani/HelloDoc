@@ -17,7 +17,7 @@
   width: 100%;
   height: 40px;
   border: 0;
-  background: #62b9c8;
+  background: #2e7d32;
   border-radius: 7px;
   outline: none;
   color: #ffffff;
@@ -25,6 +25,16 @@
 }
 .cancel-btn {
   background: #ffffff;
-  color: #62b9c8;
-  border: 1.5px solid #62b9c8;
+  color: #2e7d32;
+  border: 1.5px solid #2e7d32;
+}
+.back-btn {
+  width: 100%;
+  height: 40px;
+  border: 1.5px solid #00aaff;
+  background: #ffffff;
+  border-radius: 7px;
+  outline: none;
+  color: #00aaff;
+  cursor: pointer;
 }

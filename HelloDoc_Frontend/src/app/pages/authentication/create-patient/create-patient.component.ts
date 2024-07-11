@@ -21,6 +21,7 @@ import { CreatePatientService } from '../../../services/authentication/create-pa
 import { NotificationService } from '../../../shared/services/notification.service';
 import { IResponse } from '../../../models/response/IResponse';
 import { HttpErrorResponse } from '@angular/common/http';
+import { FormSubmitDirective } from '../../../directives/form-submit.directive';
 
 @Component({
   selector: 'app-create-patient',
@@ -36,20 +37,13 @@ import { HttpErrorResponse } from '@angular/common/http';
     InputComponent,
     PhoneNumberInputComponent,
     SelectComponent,
+    FormSubmitDirective,
   ],
   templateUrl: './create-patient.component.html',
   styleUrl: './create-patient.component.scss',
 })
 export class CreatePatientComponent {
   uploadedDocument: string | ArrayBuffer | null = '';
-  // patientInfoFormInterface: IPatientInfoForm = {
-  //   firstName: '',
-  //   lastName: '',
-  //   email: '',
-  //   password: '',
-  //   phoneNumber: '',
-  //   gender: '',
-  // };
   @ViewChild('photoInput') photoInput!: ElementRef;
   genderOptions: DropdownItem[] = [
     { value: 1, viewValue: 'Male' },
@@ -114,10 +108,20 @@ export class CreatePatientComponent {
       Validators.pattern(/^[0-9]{6}$/),
     ]),
     address: new FormControl(''),
-    emergencyContactName: new FormControl(''),
-    emergencyContactNumber: new FormControl('', [
-      Validators.pattern(ValidationPattern.phoneNumber),
-    ]),
+    emergencyContactName: new FormControl(
+      '',
+      Validators.compose([
+        Validators.required,
+        Validators.pattern(ValidationPattern.names),
+      ])
+    ),
+    emergencyContactNumber: new FormControl(
+      '',
+      Validators.compose([
+        Validators.required,
+        Validators.pattern(ValidationPattern.phoneNumber),
+      ])
+    ),
     medicalHistory: new FormControl(''),
     allergies: new FormControl(''),
     currentMedications: new FormControl(''),

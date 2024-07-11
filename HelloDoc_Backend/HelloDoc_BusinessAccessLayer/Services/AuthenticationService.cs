@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Hosting;
 using HelloDoc_Entities.DataModels;
 using HelloDoc_Entities.DTOs.Common;
 using HelloDoc_Entities.DTOs.Request;
-using HelloDoc_Entities.DTOs.Response;
 using HelloDoc_BusinessAccessLayer.Helpers;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_DataAccessLayer.IRepositories;
@@ -77,6 +76,41 @@ namespace HelloDoc_BusinessAccessLayer.Services
             }
         }
 
+        public async Task<string> VerifyOtp(VerifyOtpRequest verifyOtpRequest)
+        {
+            User user = await GetUserByEmailAsync(verifyOtpRequest.Email) ?? throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
+
+            if (user.OTP != verifyOtpRequest.Otp) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.INVALID_OTP);
+
+            else if (user.OtpExpiryTime < DateTime.UtcNow) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.OTP_EXPIRED);
+
+            user.OTP = null;
+            user.OtpExpiryTime = null;
+
+            string? token = _jwtTokenHelper.GenerateJwtToken(user) ?? throw new Exception(ErrorMessage.INVALID_ATTEMPT);
+
+            await _unitOfWork.UserRepository.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
+
+            return token;
+        }
+
+        public async Task ResetPassword(ResetPasswordRequest resetPasswordRequest)
+        {
+            User? user = await GetUserByEmailAsync(resetPasswordRequest.Email);
+            if (user != null)
+            {
+                string? hashedPassword = PasswordUtil.HashPassword(resetPasswordRequest.Password);
+                user.Password = hashedPassword;
+                await _unitOfWork.UserRepository.UpdateAsync(user);
+                await _unitOfWork.SaveAsync();
+            }
+            else
+            {
+                throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
+            }
+        }
+
         public async Task RegisterPatientRequest(RegisterPatientRequest registerPatientRequest)
         {
             User? user = registerPatientRequest.ReturnPatientRequestUser(registerPatientRequest);
@@ -101,25 +135,6 @@ namespace HelloDoc_BusinessAccessLayer.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<string> VerifyOtp(VerifyOtpResponse otpData)
-        {
-            User user = await GetUserByEmailAsync(otpData.Email) ?? throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
-
-            if (user.OTP != otpData.Otp) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.INVALID_OTP);
-
-            else if (user.OtpExpiryTime < DateTime.UtcNow) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.OTP_EXPIRED);
-
-            user.OTP = null;
-            user.OtpExpiryTime = null;
-
-            string? token = _jwtTokenHelper.GenerateJwtToken(user) ?? throw new Exception(ErrorMessage.INVALID_ATTEMPT);
-
-            await _unitOfWork.UserRepository.UpdateAsync(user);
-            await _unitOfWork.SaveAsync();
-
-            return token;
-        }
-
         public async Task RegisterProviderRequest(RegisterProviderRequest registerProviderRequest)
         {
             User? user = registerProviderRequest.ReturnProviderRequestUser(registerProviderRequest);
@@ -132,7 +147,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
                 string? hashedPassword = PasswordUtil.HashPassword(registerProviderRequest.Password);
                 user.Password = hashedPassword;
                 user.Status = 1;
-                user.Role = 2;
+                user.Role = 3;
                 await _unitOfWork.UserRepository.AddAsync(user);
                 await _unitOfWork.SaveAsync();
             }
@@ -140,6 +155,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
             ProviderDetails providerDetails = registerProviderRequest.ReturnProviderDetailsRequest(registerProviderRequest);
 
             providerDetails.UserId = user.Id;
+
             await _unitOfWork.ProviderDetailsRepository.AddAsync(providerDetails);
             await _unitOfWork.SaveAsync();
         }

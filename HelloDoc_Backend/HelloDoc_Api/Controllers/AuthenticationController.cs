@@ -51,14 +51,25 @@ namespace HelloDoc_Api.Controllers
         }
 
         [HttpPost("verify-otp")]
-        public async Task<IActionResult> VerifyOTP(VerifyOtpResponse verifyOtpResponse)
+        public async Task<IActionResult> VerifyOTP(VerifyOtpRequest verifyOtpRequest)
         {
             if (!ModelState.IsValid)
                 throw new ModelStateException(ModelState);
 
-            string? response = await _authenticationService.VerifyOtp(verifyOtpResponse);
-            return ResponseHelper.CreatedResponse(response, SuccessMessage.Login_SUCCESS, true);
+            string? response = await _authenticationService.VerifyOtp(verifyOtpRequest);
+            return ResponseHelper.CreatedResponse(response, SuccessMessage.OTP_VERIFIED, true);
         }
+
+        [HttpPost("reset-password")]
+        public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
+        {
+            if (!ModelState.IsValid)
+                throw new ModelStateException(ModelState);
+
+            await _authenticationService.ResetPassword(resetPasswordRequest);
+            return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.RESET_PASSWORD, true);
+        }
+
 
         [HttpPost]
         [Route("register-patient-request")]
