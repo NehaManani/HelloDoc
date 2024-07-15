@@ -149,6 +149,7 @@ export class CreatePatientComponent {
     this.patientInfoForm.markAllAsTouched();
     if (this.patientInfoForm.valid) {
       this.patientInfoForm.value.document = this.uploadedDocument;
+      
       this.createPatientService
         .SubmitRegisterPatientRequest(
           this.patientInfoForm.value as IPatientInfoForm

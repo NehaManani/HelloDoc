@@ -23,8 +23,7 @@ namespace HelloDoc_Api.Controllers
         [Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
         {
-            if (!ModelState.IsValid)
-                throw new ModelStateException(ModelState);
+            if (!ModelState.IsValid) throw new ModelStateException(ModelState);
 
             string token = await _authenticationService.Login(loginRequest);
 
@@ -42,8 +41,7 @@ namespace HelloDoc_Api.Controllers
         [HttpPost("resend-otp")]
         public async Task<IActionResult> ResendOTP([FromBody] EmailRequest emailRequest)
         {
-            if (!ModelState.IsValid)
-                throw new ModelStateException(ModelState);
+            if (!ModelState.IsValid) throw new ModelStateException(ModelState);
 
             await _authenticationService.SendOtp(emailRequest.Email);
 
@@ -57,16 +55,17 @@ namespace HelloDoc_Api.Controllers
                 throw new ModelStateException(ModelState);
 
             string? response = await _authenticationService.VerifyOtp(verifyOtpRequest);
+
             return ResponseHelper.CreatedResponse(response, SuccessMessage.OTP_VERIFIED, true);
         }
 
         [HttpPost("reset-password")]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordRequest resetPasswordRequest)
         {
-            if (!ModelState.IsValid)
-                throw new ModelStateException(ModelState);
+            if (!ModelState.IsValid) throw new ModelStateException(ModelState);
 
             await _authenticationService.ResetPassword(resetPasswordRequest);
+
             return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.RESET_PASSWORD, true);
         }
 
@@ -75,8 +74,7 @@ namespace HelloDoc_Api.Controllers
         [Route("register-patient-request")]
         public async Task<IActionResult> RegisterPatientRequest([FromForm] RegisterPatientRequest registerPatientRequest)
         {
-            if (!ModelState.IsValid)
-                throw new ModelStateException(ModelState);
+            if (!ModelState.IsValid) throw new ModelStateException(ModelState);
 
             await _authenticationService.RegisterPatientRequest(registerPatientRequest);
 
@@ -87,8 +85,7 @@ namespace HelloDoc_Api.Controllers
         [Route("register-provider-request")]
         public async Task<IActionResult> RegisterProviderRequest([FromForm] RegisterProviderRequest registerProviderRequest)
         {
-            if (!ModelState.IsValid)
-                throw new ModelStateException(ModelState);
+            if (!ModelState.IsValid) throw new ModelStateException(ModelState);
 
             await _authenticationService.RegisterProviderRequest(registerProviderRequest);
 

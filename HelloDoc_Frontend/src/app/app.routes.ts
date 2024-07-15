@@ -7,6 +7,7 @@ import { UserSelectionComponent } from './pages/authentication/user-selection/us
 import { VerifyOtpComponent } from './pages/authentication/verify-otp/verify-otp.component';
 import { CreateProviderComponent } from './pages/authentication/create-provider/create-provider.component';
 import { ResetPasswordComponent } from './pages/authentication/reset-password/reset-password.component';
+import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
@@ -17,4 +18,5 @@ export const routes: Routes = [
   { path: 'create-provider', component: CreateProviderComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
+  { path: 'admin-dashboard', component: AdminDashboardComponent },
 ];

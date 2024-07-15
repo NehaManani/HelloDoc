@@ -30,10 +30,15 @@ export class AuthService {
       decodedToken[
         'http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress'
       ];
+    const userRole =
+      decodedToken[
+        'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+      ];
     this.storageHelper.setAsLocal(StorageHelperConstant.authToken, token);
     this.storageHelper.setAsLocal(StorageHelperConstant.userId, userId);
     this.storageHelper.setAsLocal(StorageHelperConstant.userName, userName);
     this.storageHelper.setAsLocal(StorageHelperConstant.email, userEmail);
+    this.storageHelper.setAsLocal(StorageHelperConstant.userRole, userRole);
   }
 
   isJwtTokenExpire() {
@@ -64,11 +69,16 @@ export class AuthService {
     return this.storageHelper.getFromLocal(StorageHelperConstant.email);
   }
 
+  getUserRole() {
+    return this.storageHelper.getFromLocal(StorageHelperConstant.userRole);
+  }
+
   logOut(): void {
     this.storageHelper.removeFromLocal(StorageHelperConstant.authToken);
     this.storageHelper.removeFromLocal(StorageHelperConstant.userId);
     this.storageHelper.removeFromLocal(StorageHelperConstant.userName);
     this.storageHelper.removeFromLocal(StorageHelperConstant.email);
-    this.router.navigate(['/']);
+    this.storageHelper.removeFromLocal(StorageHelperConstant.userRole);
+    this.router.navigate(['']);
   }
 }

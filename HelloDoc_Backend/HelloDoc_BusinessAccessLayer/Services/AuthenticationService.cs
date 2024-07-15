@@ -51,7 +51,8 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
         public async Task SendOtp(string email)
         {
-            User? user = await GetUserByEmailAsync(email);
+            User? user = await GetUserByEmailAsync(email) ?? throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
+
             if (user != null)
             {
                 //generate a random number of six digit OTP
@@ -69,10 +70,6 @@ namespace HelloDoc_BusinessAccessLayer.Services
                     Body = MailBodyUtil.SendOtpForAuthenticationBody(user.OTP, _environment.WebRootPath)
                 };
                 await _mailService.SendMailAsync(mailDto);
-            }
-            else
-            {
-                throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
             }
         }
 
@@ -97,17 +94,14 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
         public async Task ResetPassword(ResetPasswordRequest resetPasswordRequest)
         {
-            User? user = await GetUserByEmailAsync(resetPasswordRequest.Email);
+            User? user = await GetUserByEmailAsync(resetPasswordRequest.Email) ?? throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
+
             if (user != null)
             {
                 string? hashedPassword = PasswordUtil.HashPassword(resetPasswordRequest.Password);
                 user.Password = hashedPassword;
                 await _unitOfWork.UserRepository.UpdateAsync(user);
                 await _unitOfWork.SaveAsync();
-            }
-            else
-            {
-                throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
             }
         }
 
@@ -166,10 +160,6 @@ namespace HelloDoc_BusinessAccessLayer.Services
         {
             return await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(user => user.Email == email);
         }
-
-        public static string EncodingMailToken(string email) => System.Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(email + "&" + DateTime.UtcNow.AddMinutes(SystemConstants.TOKEN_EXPIRE_MINUTES)));
-
-        public static string DecodingMailToken(string token) => System.Text.Encoding.UTF8.GetString(System.Convert.FromBase64String(token));
 
         #endregion
     }

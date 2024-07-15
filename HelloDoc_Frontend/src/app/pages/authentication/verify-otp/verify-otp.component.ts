@@ -16,6 +16,8 @@ import { VerifyOtpService } from '../../../services/authentication/verify-otp.se
 import { HttpErrorResponse } from '@angular/common/http';
 import { AuthService } from '../../../services/authentication/auth.service';
 import { IResponse } from '../../../models/response/IResponse';
+import { SystemConstants } from '../../../constants/system-constants/system-constants';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-verify-otp',
@@ -58,8 +60,14 @@ export class VerifyOtpComponent {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.email = params['email'];
-      this.from = params['from'];
+      this.email = CryptoJS.AES.decrypt(
+        params['email'],
+        SystemConstants.EncryptionKey
+      ).toString(CryptoJS.enc.Utf8);
+      this.from = CryptoJS.AES.decrypt(
+        params['from'],
+        SystemConstants.EncryptionKey
+      ).toString(CryptoJS.enc.Utf8);
     });
   }
 
@@ -78,8 +86,8 @@ export class VerifyOtpComponent {
           const redirectUrl =
             this.from === 'forgot-password'
               ? '/reset-password'
-              : '/create-patient';
-              
+              : '/admin-dashboard';
+
           if (this.from === 'forgot-password') {
             this.router.navigate([redirectUrl], {
               queryParams: { email: this.email },

@@ -16,6 +16,8 @@ import { ButtonComponent } from '../../../shared/components/button/button.compon
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { passwordMatchValidator } from '../../../common/password-match';
 import { ResetPasswordService } from '../../../services/authentication/reset-password.service';
+import { SystemConstants } from '../../../constants/system-constants/system-constants';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-reset-password',
@@ -59,7 +61,10 @@ export class ResetPasswordComponent {
 
   ngOnInit() {
     this.activatedRoute.queryParams.subscribe((params) => {
-      this.email = params['email'];
+      this.email = CryptoJS.AES.decrypt(
+        params['email'],
+        SystemConstants.EncryptionKey
+      ).toString(CryptoJS.enc.Utf8);
     });
   }
 
@@ -74,7 +79,6 @@ export class ResetPasswordComponent {
         email: this.email,
         password: this.resetPasswordForm.value.password,
       };
-
       this.resetPasswordService.resetPassword(resetPasswordRequest).subscribe({
         next: (response: IResponse<null>) => {
           if (response.success) {

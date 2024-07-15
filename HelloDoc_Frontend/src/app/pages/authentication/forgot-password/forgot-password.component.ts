@@ -8,8 +8,6 @@ import {
 } from '@angular/forms';
 import { Title } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
-import { RoutingPathConstant } from '../../../constants/routing/routing-path';
-import { ValidationMessageConstant } from '../../../constants/validation/validation-message';
 import { ValidationPattern } from '../../../constants/validation/validation-pattern';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { CommonModule } from '@angular/common';
@@ -18,6 +16,8 @@ import { ForgotPasswordService } from '../../../services/authentication/forgot-p
 import { NotificationService } from '../../../shared/services/notification.service';
 import { HttpErrorResponse } from '@angular/common/http';
 import { IResponse } from '../../../models/response/IResponse';
+import { SystemConstants } from '../../../constants/system-constants/system-constants';
+import * as CryptoJS from 'crypto-js';
 
 @Component({
   selector: 'app-forgot-password',
@@ -74,8 +74,14 @@ export class ForgotPasswordComponent {
               this.notificationService.success(response.message);
               this.router.navigate(['/verify-otp'], {
                 queryParams: {
-                  email: this.forgotPasswordForm.value.email,
-                  from: 'forgot-password',
+                  email: CryptoJS.AES.encrypt(
+                    this.forgotPasswordForm.value.email ?? '',
+                    SystemConstants.EncryptionKey
+                  ),
+                  from: CryptoJS.AES.encrypt(
+                    'forgot-password',
+                    SystemConstants.EncryptionKey
+                  ),
                 },
               });
             }

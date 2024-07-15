@@ -1,1 +1,31 @@
-<p>header works!</p>
+<div class="header-container">
+  <div class="logo">
+    <img class="logo" src="assets/logo-light.png" alt="Logo" />
+  </div>
+  <div class="user-info">
+    <span
+      >Welcome <strong>{{ userName }}</strong></span
+    >
+    <app-button
+      label="Logout"
+      title="Logout"
+      type="submit"
+      class="mx-3"
+      className="cancel-btn common-btn"
+      (btnClick)="onLogout()"
+    >
+    </app-button>
+  </div>
+</div>
+<div class="navbar-container">
+  <nav class="navtab">
+    @for (tab of navTabs; track $index) {
+    <a
+      [routerLink]="[tab.link]"
+      class="nav-link"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      >{{ tab.label }}</a
+    >}
+  </nav>
+</div>
