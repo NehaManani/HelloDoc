@@ -26,7 +26,6 @@ body {
 }
 
 .form_container {
-  //width: fit-content;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -37,10 +36,6 @@ body {
   background-color: #ffffff;
   font-family: "Inter", sans-serif;
 }
-
-// .logo {
-//   max-width: 80%;
-// }
 
 .title_container {
   display: flex;
@@ -67,3 +62,6 @@ form.ng-submitted select.ng-invalid,
 select.ng-touched.ng-invalid {
   border: 1px solid red;
 }
+
+/* Importing Bootstrap SCSS file. */
+@import "bootstrap/scss/bootstrap";
