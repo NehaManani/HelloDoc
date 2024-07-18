@@ -8,6 +8,7 @@ import { VerifyOtpComponent } from './pages/authentication/verify-otp/verify-otp
 import { CreateProviderComponent } from './pages/authentication/create-provider/create-provider.component';
 import { ResetPasswordComponent } from './pages/authentication/reset-password/reset-password.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
+import { PatientListComponent } from './pages/admin/admin-dashboard/patient-list/patient-list.component';
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
@@ -18,5 +19,18 @@ export const routes: Routes = [
   { path: 'create-provider', component: CreateProviderComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },
   { path: 'reset-password', component: ResetPasswordComponent },
-  { path: 'admin-dashboard', component: AdminDashboardComponent },
+  {
+    path: 'admin-dashboard',
+    component: AdminDashboardComponent,
+    children: [
+      {
+        path: '',
+        redirectTo: '/admin-dashboard/patient-list',
+        pathMatch: 'full',
+      },
+      { path: '**', component: PatientListComponent },
+      { path: 'patient-list', component: PatientListComponent },
+      // Add other child routes here
+    ],
+  },
 ];

@@ -1,10 +1,12 @@
 export interface IPatientData {
-  name: string;
-  dob: string;
-  requester: string;
-  requestedDate: string;
-  phone: string;
-  address: string;
-  notes: string;
-  chatWith: string;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  password: string | null;
+  gender: number;
+  role: string;
+  city: string | null;
+  zip: string | null;
+  address: string | null;
 }

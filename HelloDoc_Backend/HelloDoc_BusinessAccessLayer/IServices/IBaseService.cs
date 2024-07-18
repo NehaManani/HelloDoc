@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using HelloDoc_Entities.DTOs.Common;
 
 namespace HelloDoc_BusinessAccessLayer.IServices
 {
@@ -21,5 +22,7 @@ namespace HelloDoc_BusinessAccessLayer.IServices
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter);
 
         Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, IEnumerable<Expression<Func<T, object>>> includes);
+
+        Task<PageListResponseDTO<T>> GetAllAsync(PageListRequestEntity<T> pageListRequest);
     }
 }

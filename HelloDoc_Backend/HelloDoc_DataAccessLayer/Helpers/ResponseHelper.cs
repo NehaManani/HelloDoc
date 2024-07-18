@@ -8,16 +8,16 @@ namespace HelloDoc_DataAccessLayer.Helpers
     public class ResponseHelper
     {
 
-        public static IActionResult CreatedResponse<T>(T? data, string message, bool success)
+        public static IActionResult CreatedResponse<T>(T? data, string? message, bool success)
         {
             HttpStatusCode statusCode = success ? HttpStatusCode.OK : HttpStatusCode.BadRequest;
 
             ApiResponse<T> result = new()
             {
                 StatusCode = (int)statusCode,
-                Message = message,
+                Message = message ?? string.Empty,
                 Data = data,
-                Success = true,
+                Success = success,
             };
             return new ObjectResult(result) { StatusCode = (int)statusCode };
         }

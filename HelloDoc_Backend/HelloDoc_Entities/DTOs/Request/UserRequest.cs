@@ -20,7 +20,9 @@ namespace HelloDoc_Entities.DTOs.Request
         public string PhoneNumber { get; set; } = null!;
 
         [Required]
-        public int Gender { get; set; }
+        public int? Gender { get; set; }
+
+        public string? Role { get; set; }
 
         public string? City { get; set; }
         public string? Zip { get; set; }

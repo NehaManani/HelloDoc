@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_DataAccessLayer.IRepositories;
+using HelloDoc_Entities.DTOs.Common;
 
 namespace HelloDoc_BusinessAccessLayer.Services
 {
@@ -30,5 +31,8 @@ namespace HelloDoc_BusinessAccessLayer.Services
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter) => await _repository.GetAllAsync(filter);
 
         public async Task<IEnumerable<T>> GetAllAsync(Expression<Func<T, bool>> filter, IEnumerable<Expression<Func<T, object>>> includes) => await _repository.GetAllAsync(filter, includes);
+
+        public async Task<PageListResponseDTO<T>> GetAllAsync(PageListRequestEntity<T> pageListRequest)
+        => await _repository.GetAllAsync(pageListRequest);
     }
 }

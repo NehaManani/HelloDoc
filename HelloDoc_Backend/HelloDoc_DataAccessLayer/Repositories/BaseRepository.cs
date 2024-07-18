@@ -1,9 +1,12 @@
 using System.Linq.Expressions;
+using HelloDoc_Common.Constants;
 using HelloDoc_DataAccessLayer.Configuration;
 using HelloDoc_DataAccessLayer.Data;
 using HelloDoc_DataAccessLayer.IRepositories;
 using HelloDoc_DataAccessLayer.QueryExtension;
+using HelloDoc_Entities.DTOs.Common;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Dynamic.Core;
 
 namespace HelloDoc_DataAccessLayer.Repositories
 {
@@ -133,6 +136,58 @@ namespace HelloDoc_DataAccessLayer.Repositories
                 });
             }
             return await query.FirstOrDefaultAsync();
+        }
+
+        public async Task<PageListResponseDTO<T>> GetAllAsync(PageListRequestEntity<T> pageListRequest)
+        {
+            IQueryable<T> query = _dbSet.AsQueryable();
+
+            if (pageListRequest.IncludeExpressions != null)
+            {
+                query = pageListRequest.IncludeExpressions.Aggregate(query, (current, include) =>
+                {
+                    return current.Include(include);
+                });
+            }
+
+            if (pageListRequest.ThenIncludeExpressions != null)
+            {
+                query = pageListRequest.ThenIncludeExpressions.Aggregate(query, (current, thenInclude) =>
+                {
+                    return current.Include(thenInclude);
+                });
+            }
+
+            if (pageListRequest.Selects != null)
+                query = query.Select(pageListRequest.Selects);
+
+            if (pageListRequest.Predicate != null)
+            {
+                query = query.Where(pageListRequest.Predicate);
+            }
+
+            if (!string.IsNullOrEmpty(pageListRequest.SortColumn))
+            {
+                string sortExpression = pageListRequest.SortColumn.Trim();
+
+                string sortOrder = pageListRequest.SortOrder.Trim().ToLower();
+
+                if (string.IsNullOrEmpty(sortOrder) || !sortOrder.Equals(SystemConstants.ASCENDING))
+                    sortOrder = SystemConstants.DESCENDING;
+
+                string dynamicSortExpression = $"{sortExpression} {sortOrder}";
+
+                query = query.OrderBy(dynamicSortExpression);
+            }
+
+            int totalRecords = await query.CountAsync();
+
+            List<T>? records = await query
+            .Skip((pageListRequest.PageIndex - 1) * pageListRequest.PageSize)
+            .Take(pageListRequest.PageSize)
+            .ToListAsync();
+
+            return new PageListResponseDTO<T>(pageListRequest.PageIndex, pageListRequest.PageSize, totalRecords, records);
         }
     }
 }

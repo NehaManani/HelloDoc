@@ -1,5 +1,6 @@
 using System.Linq.Expressions;
 using HelloDoc_DataAccessLayer.Configuration;
+using HelloDoc_Entities.DTOs.Common;
 
 namespace HelloDoc_DataAccessLayer.IRepositories
 {
@@ -38,8 +39,11 @@ namespace HelloDoc_DataAccessLayer.IRepositories
         Task<T> GetIncludeAsync(Expression<Func<T, object>> include, Expression<Func<T, bool>> filter);
 
         void DeleteRange(IEnumerable<T> moduleAccessPermissions);
+
         Task<int> CountAsync(Expression<Func<T, bool>>? filter = null);
+
         Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, IEnumerable<Expression<Func<T, object>>> includes, string[]? thenIncludeExpressions);
 
+        Task<PageListResponseDTO<T>> GetAllAsync(PageListRequestEntity<T> pageListRequest);
     }
 }

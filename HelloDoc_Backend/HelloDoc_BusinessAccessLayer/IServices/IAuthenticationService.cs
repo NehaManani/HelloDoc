@@ -1,6 +1,4 @@
 using HelloDoc_Entities.DTOs.Request;
-using HelloDoc_Entities.DTOs.Response;
-using Microsoft.AspNetCore.Mvc;
 
 namespace HelloDoc_BusinessAccessLayer.IServices
 {
