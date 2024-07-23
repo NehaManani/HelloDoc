@@ -134,6 +134,17 @@ export class CreatePatientComponent {
     private notificationService: NotificationService
   ) {}
 
+  // handlePictureFileChange(event: any) {
+  //   const file = event.target.files?.[0];
+  //   const reader = new FileReader();
+  //   reader.readAsDataURL(file);
+  //   reader.onload = () => {
+  //     console.log(reader.result);
+  //     this.patientInfoForm.value.document = reader.result;
+  //     this.uploadedDocument = reader.result;
+  //   };
+  // }
+
   handlePictureFileChange(event: any) {
     const file = event.target.files?.[0];
     const reader = new FileReader();
@@ -146,10 +157,12 @@ export class CreatePatientComponent {
   }
 
   onSubmit() {
+    debugger;
+    console.log(this.patientInfoForm);
+
     this.patientInfoForm.markAllAsTouched();
     if (this.patientInfoForm.valid) {
       this.patientInfoForm.value.document = this.uploadedDocument;
-      
       this.createPatientService
         .SubmitRegisterPatientRequest(
           this.patientInfoForm.value as IPatientInfoForm

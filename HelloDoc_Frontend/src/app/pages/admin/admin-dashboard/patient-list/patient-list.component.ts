@@ -15,6 +15,7 @@ import { IResponse } from '../../../../models/response/IResponse';
 import { IPaginatedResponse } from '../../../../models/response/IPaginatedResponse';
 import { debounceTime, Subject } from 'rxjs';
 import { NotificationService } from '../../../../shared/services/notification.service';
+import { IStatusCount } from '../../../../models/response/IStatusCounts';
 
 @Component({
   selector: 'app-patient-list',
@@ -38,14 +39,22 @@ import { NotificationService } from '../../../../shared/services/notification.se
 export class PatientListComponent {
   activeCard: string = 'All';
   datasource: IPatientData[] = [];
-  page = 1;
+  pageIndex = 1;
   pageSize = 7;
   collectionSize!: number;
   searchQuery!: string;
+  status: string = '';
   searchSubject = new Subject<string>();
   sortColumn: string = 'FirstName';
   sortOrder: string = 'ascending';
-
+  statusCounts: IStatusCount = {
+    new: 0,
+    pending: 0,
+    active: 0,
+    conclude: 0,
+    close: 0,
+    unpaid: 0,
+  };
   constructor(
     private adminService: AdminService,
     private notificationService: NotificationService
@@ -56,6 +65,7 @@ export class PatientListComponent {
       this.search(searchQuery);
     });
     this.getPatientListRequest();
+    this.getStatusCount();
   }
 
   onKeyup(searchQuery: string) {
@@ -69,8 +79,14 @@ export class PatientListComponent {
 
   setActiveCard(card: string) {
     this.activeCard = card;
-    this.page = 1;
+    this.status = card === 'All' ? '' : card;
+    this.pageIndex = 1;
     this.getPatientListRequest();
+  }
+
+  onStatusChange(event: Event) {
+    const selectedStatus = (event.target as HTMLSelectElement).value;
+    this.setActiveCard(selectedStatus);
   }
 
   changeSorting(column: string) {
@@ -85,12 +101,15 @@ export class PatientListComponent {
   }
 
   getPatientListRequest() {
+    console.log(this.status);
+
     const request: IPaginatedRequest = {
-      pageIndex: this.page,
+      pageIndex: this.pageIndex,
       pageSize: this.pageSize,
       sortOrder: this.sortOrder,
       sortColumn: this.sortColumn,
       searchQuery: this.searchQuery,
+      status: this.status,
     };
 
     this.adminService.getPatientList(request).subscribe({
@@ -104,5 +123,41 @@ export class PatientListComponent {
         this.notificationService.error(error.error.messages);
       },
     });
+  }
+
+  getStatusCount() {
+    this.adminService.statusCountList().subscribe({
+      next: (response: IResponse<IStatusCount>) => {
+        if (response.success) {
+          this.statusCounts = response.data;
+        }
+      },
+      error: (error) => {
+        this.notificationService.error(error.error.messages);
+      },
+    });
+  }
+
+  getActiveCardCount(): number {
+    if (this.activeCard === 'All') {
+      return this.collectionSize > 0 ? this.collectionSize : 0;
+    }
+
+    switch (this.activeCard) {
+      case 'New':
+        return this.statusCounts.new;
+      case 'Pending':
+        return this.statusCounts.pending;
+      case 'Active':
+        return this.statusCounts.active;
+      case 'Conclude':
+        return this.statusCounts.conclude;
+      case 'Close':
+        return this.statusCounts.close;
+      case 'Unpaid':
+        return this.statusCounts.unpaid;
+      default:
+        return 0;
+    }
   }
 }

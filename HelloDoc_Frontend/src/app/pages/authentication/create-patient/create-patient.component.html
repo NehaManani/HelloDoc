@@ -15,7 +15,7 @@
       <h3 class="create-patient-heading">Create Patient Account</h3>
     </div>
     <div class="card-body p-4">
-      <form [formGroup]="patientInfoForm" appFormSubmit (ngSubmit)="onSubmit()">
+      <form [formGroup]="patientInfoForm" appFormSubmit>
         <div class="patient-information">
           <h5>Patient Information</h5>
         </div>
@@ -185,7 +185,7 @@
               errorTitle="Emergency Contact Number"
               placeholder="Emergency Contact Number"
               [parentForm]="patientInfoForm"
-              controlName="phoneNumber"
+              controlName="emergencyContactNumber"
               type="text"
               className="app-input"
             />
@@ -234,6 +234,7 @@
             title="Submit"
             type="Submit"
             className="mt-3 px-3 common-btn"
+            (btnClick)="onSubmit()"
           >
           </app-button>
           <app-button

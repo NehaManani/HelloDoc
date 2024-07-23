@@ -1,4 +1,5 @@
 using HelloDoc_BusinessAccessLayer.IServices;
+using HelloDoc_Common.Exceptions;
 using HelloDoc_DataAccessLayer.Helpers;
 using HelloDoc_Entities.DTOs.Common;
 using HelloDoc_Entities.DTOs.Request;
@@ -21,8 +22,20 @@ namespace HelloDoc_Api.Controllers
         [HttpPost("patient-request-list")]
         public async Task<IActionResult> GetPatientRequestList(PageListRequestDTO pageListRequest)
         {
+            if (!ModelState.IsValid) throw new ModelStateException(ModelState);
+
             PageListResponseDTO<UserRequest>? response = await _adminService.GetPatientRequestList(pageListRequest);
+
             return ResponseHelper.CreatedResponse(response, null, success: true);
+        }
+
+        [HttpGet]
+        [Route("status-count-list")]
+        public async Task<IActionResult> StatusCountList()
+        {
+            StatusCountResponse? statusCountResponse = await _adminService.StatusCountRequest();
+
+            return ResponseHelper.CreatedResponse(statusCountResponse, null, true);
         }
     }
 }

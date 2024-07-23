@@ -1,6 +1,4 @@
 using AutoMapper;
-using HelloDoc_Entities.DataModels;
-using HelloDoc_Entities.DTOs.Request;
 
 namespace HelloDoc_BusinessAccessLayer.Profiles
 {

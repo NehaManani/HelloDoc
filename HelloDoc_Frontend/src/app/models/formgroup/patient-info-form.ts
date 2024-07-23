@@ -8,8 +8,8 @@ export interface IPatientInfoForm {
   city?: string;
   zip?: string;
   address?: string;
-  emergencyContactName?: string;
-  emergencyContactNumber?: string;
+  emergencyContactName: string;
+  emergencyContactNumber: string;
   medicalHistory?: string;
   allergies?: string;
   currentMedications?: string;

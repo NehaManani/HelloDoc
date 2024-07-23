@@ -2,7 +2,6 @@ using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_Common.Exceptions;
 using HelloDoc_DataAccessLayer.Helpers;
 using HelloDoc_Entities.DTOs.Request;
-using HelloDoc_Entities.DTOs.Response;
 using Microsoft.AspNetCore.Mvc;
 using static HelloDoc_Common.Constants.MessageConstants;
 

@@ -4,4 +4,5 @@ export interface IPaginatedRequest {
   sortOrder: string;
   sortColumn: string;
   searchQuery: string;
+  status: string;
 }

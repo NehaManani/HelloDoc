@@ -1,10 +1,11 @@
 using System.Linq.Expressions;
 using HelloDoc_BusinessAccessLayer.IServices;
+using HelloDoc_Common.Constants;
 using HelloDoc_DataAccessLayer.IRepositories;
 using HelloDoc_Entities.DataModels;
 using HelloDoc_Entities.DTOs.Common;
 using HelloDoc_Entities.DTOs.Request;
-using Org.BouncyCastle.Math.EC.Rfc7748;
+using HelloDoc_Entities.ExtensionMethods;
 
 namespace HelloDoc_BusinessAccessLayer.Services
 {
@@ -17,39 +18,43 @@ namespace HelloDoc_BusinessAccessLayer.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PageListResponseDTO<UserRequest>> GetPatientRequestList(PageListRequestDTO admitRequestList)
+        public async Task<PageListResponseDTO<UserRequest>> GetPatientRequestList(PageListRequestDTO patientRequest)
         {
             PageListRequestEntity<User> pageListRequestEntity = new()
             {
-                PageIndex = admitRequestList.PageIndex,
-                PageSize = admitRequestList.PageSize,
-                SortColumn = !string.IsNullOrEmpty(admitRequestList.SortColumn) ? admitRequestList.SortColumn : null!,
-                SortOrder = admitRequestList.SortOrder,
+                PageIndex = patientRequest.PageIndex,
+                PageSize = patientRequest.PageSize,
+                SortColumn = !string.IsNullOrEmpty(patientRequest.SortColumn) ? patientRequest.SortColumn : null!,
+                SortOrder = patientRequest.SortOrder,
                 IncludeExpressions = [x => x.UserRoles, x => x.Genders],
                 Predicate = user =>
-                user.Role == 2 &&
-                (string.IsNullOrEmpty(admitRequestList.SearchQuery) ||
-                user.FirstName.Trim().ToLower().Contains(admitRequestList.SearchQuery.Trim().ToLower()) ||
-                user.LastName.Trim().ToLower().Contains(admitRequestList.SearchQuery.Trim().ToLower()) ||
-                user.Email.Trim().ToLower().Contains(admitRequestList.SearchQuery.Trim().ToLower()))
+                        user.Role == 2 &&
+                        (string.IsNullOrEmpty(patientRequest.SearchQuery) ||
+                        user.FirstName.Trim().ToLower().Contains(patientRequest.SearchQuery.Trim().ToLower()) ||
+                        user.LastName.Trim().ToLower().Contains(patientRequest.SearchQuery.Trim().ToLower()) ||
+                        user.Email.Trim().ToLower().Contains(patientRequest.SearchQuery.Trim().ToLower())) &&
+                        (string.IsNullOrEmpty(patientRequest.Status) || user.UserStatuses.Status == patientRequest.Status)
             };
 
             PageListResponseDTO<User> pageListResponse = await _unitOfWork.UserRepository.GetAllAsync(pageListRequestEntity);
 
-            List<UserRequest> admitRequestListResponseDTOs = pageListResponse.Records.Select(admitRequest => new UserRequest
-            {
-                FirstName = admitRequest.FirstName,
-                LastName = admitRequest.LastName,
-                Email = admitRequest.Email,
-                PhoneNumber = admitRequest.PhoneNumber,
-                Gender = (int)admitRequest.Gender,
-                Role = admitRequest.UserRoles.Role,
-                City = admitRequest.City,
-                Zip = admitRequest.Zip,
-                Address = admitRequest.Address
-            }).ToList();
+            List<UserRequest> patientRequestListResponseDTOs = UserMappingProfile.ToPatientRequestListResponseDTO(pageListResponse.Records);
 
-            return new PageListResponseDTO<UserRequest>(pageListResponse.PageIndex, pageListResponse.PageSize, pageListResponse.TotalRecords, admitRequestListResponseDTOs);
+            return new PageListResponseDTO<UserRequest>(pageListResponse.PageIndex, pageListResponse.PageSize, pageListResponse.TotalRecords, patientRequestListResponseDTOs);
+        }
+
+        public async Task<StatusCountResponse> StatusCountRequest()
+        {
+            IEnumerable<User> users = await _unitOfWork.UserRepository.GetAllAsync(
+                user => user.Role == UserRoleConstants.Patient,
+                new List<Expression<Func<User, object>>>
+                {
+                    user => user.UserStatuses
+                });
+
+            StatusCountResponse statusCountResponse = UserMappingProfile.ToStatusCountResponse(users);
+
+            return statusCountResponse;
         }
     }
 }

@@ -35,40 +35,5 @@ namespace HelloDoc_Entities.DTOs.Request
 
         public string? NonDisclosureDocument { get; set; }
 
-        public User ReturnProviderRequestUser(RegisterProviderRequest registerProviderRequest)
-        {
-            return new User
-            {
-                FirstName = registerProviderRequest.FirstName,
-                LastName = registerProviderRequest.LastName,
-                Email = registerProviderRequest.Email,
-                Password = registerProviderRequest.Password,
-                PhoneNumber = registerProviderRequest.PhoneNumber,
-                City = registerProviderRequest.City,
-                Zip = registerProviderRequest.Zip,
-                Address = registerProviderRequest.Address,
-            };
-        }
-
-        public ProviderDetails ReturnProviderDetailsRequest(RegisterProviderRequest registerProviderRequest)
-        {
-            return new ProviderDetails
-            {
-                MedicalLicense = registerProviderRequest.MedicalLicense,
-                NpiNumber = registerProviderRequest.NpiNumber,
-                BusinessName = registerProviderRequest.BusinessName,
-                BusinessWebsite = registerProviderRequest.BusinessWebsite,
-                Document = registerProviderRequest.Document,
-                AdminNotes = registerProviderRequest.AdminNotes,
-                ContractorAgreement = registerProviderRequest.ContractorAgreement,
-                ContractorDocument = registerProviderRequest.ContractorDocument,
-                BackgroundCheck = registerProviderRequest.BackgroundCheck,
-                BackgroundCheckDocument = registerProviderRequest.BackgroundCheckDocument,
-                HipaaCompliance = registerProviderRequest.HipaaCompliance,
-                HipaaComplianceDocument = registerProviderRequest.HipaaComplianceDocument,
-                NonDisclosureAgreement = registerProviderRequest.NonDisclosureAgreement,
-                NonDisclosureDocument = registerProviderRequest.NonDisclosureDocument
-            };
-        }
     }
 }

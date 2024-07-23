@@ -12,6 +12,7 @@ using HelloDoc_BusinessAccessLayer.Helpers;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_DataAccessLayer.IRepositories;
 using static HelloDoc_Common.Constants.MessageConstants;
+using HelloDoc_Entities.ExtensionMethods;
 
 namespace HelloDoc_BusinessAccessLayer.Services
 {
@@ -41,7 +42,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
             await SendOtp(user.Email);
 
-            return user.FirstName;
+            return user.FirstName + " " + user.LastName;
         }
 
         public async Task ForgotPassword(string email)
@@ -56,11 +57,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
             if (user != null)
             {
                 //generate a random number of six digit OTP
-                Random generator = new Random();
-                user.OTP = generator.Next(100000, 999999).ToString();
-                user.OtpExpiryTime = DateTime.UtcNow.AddMinutes(10); // Ensure the time is in UTC
-                await _unitOfWork.UserRepository.UpdateAsync(user);
-                await _unitOfWork.SaveAsync();
+                await GenerateOtp(user);
 
                 //sent otp in mail
                 MailDTO mailDto = new()
@@ -81,8 +78,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
             else if (user.OtpExpiryTime < DateTime.UtcNow) throw new CustomException(StatusCodes.Status400BadRequest, ErrorMessage.OTP_EXPIRED);
 
-            user.OTP = null;
-            user.OtpExpiryTime = null;
+            UserMappingProfile.ToVerifyOtp(user);
 
             string? token = _jwtTokenHelper.GenerateJwtToken(user) ?? throw new Exception(ErrorMessage.INVALID_ATTEMPT);
 
@@ -99,7 +95,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
             if (user != null)
             {
                 string? hashedPassword = PasswordUtil.HashPassword(resetPasswordRequest.Password);
-                user.Password = hashedPassword;
+                UserMappingProfile.ToSetPassword(user, hashedPassword);
                 await _unitOfWork.UserRepository.UpdateAsync(user);
                 await _unitOfWork.SaveAsync();
             }
@@ -107,31 +103,29 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
         public async Task RegisterPatientRequest(RegisterPatientRequest registerPatientRequest)
         {
-            User? user = registerPatientRequest.ReturnPatientRequestUser(registerPatientRequest);
-
+            User? user = UserMappingProfile.ToRegisterPatientUserRequest(registerPatientRequest);
             if (await _unitOfWork.UserRepository.AnyAsync(u => u.Email == user.Email))
                 throw new CustomException(StatusCodes.Status409Conflict, ErrorMessage.EMAIL_ALREADY_EXIST);
 
             if (user != null)
             {
                 string? hashedPassword = PasswordUtil.HashPassword(registerPatientRequest.Password);
-                user.Password = hashedPassword;
-                user.Status = 1;
-                user.Role = 2;
+                UserMappingProfile.ToSetPatientStatusAndRole(user, hashedPassword);
                 await _unitOfWork.UserRepository.AddAsync(user);
                 await _unitOfWork.SaveAsync();
             }
 
-            PatientDetails patientDetails = registerPatientRequest.ReturnPatientDetailsRequest(registerPatientRequest);
+            PatientDetails patientDetails = PatientDetailsMappingProfile.ToRegisterPatientDetailsRequest(registerPatientRequest);
 
-            patientDetails.UserId = user.Id;
+            PatientDetailsMappingProfile.ToSetUserId(patientDetails, user);
+
             await _unitOfWork.PatientDetailsRepository.AddAsync(patientDetails);
             await _unitOfWork.SaveAsync();
         }
 
         public async Task RegisterProviderRequest(RegisterProviderRequest registerProviderRequest)
         {
-            User? user = registerProviderRequest.ReturnProviderRequestUser(registerProviderRequest);
+            User? user = UserMappingProfile.ToRegisterProviderUserRequest(registerProviderRequest);
 
             if (await _unitOfWork.UserRepository.AnyAsync(u => u.Email == user.Email))
                 throw new CustomException(StatusCodes.Status409Conflict, ErrorMessage.EMAIL_ALREADY_EXIST);
@@ -139,16 +133,14 @@ namespace HelloDoc_BusinessAccessLayer.Services
             if (user != null)
             {
                 string? hashedPassword = PasswordUtil.HashPassword(registerProviderRequest.Password);
-                user.Password = hashedPassword;
-                user.Status = 1;
-                user.Role = 3;
+                UserMappingProfile.ToSetProviderStatusAndRole(user, hashedPassword);
                 await _unitOfWork.UserRepository.AddAsync(user);
                 await _unitOfWork.SaveAsync();
             }
 
-            ProviderDetails providerDetails = registerProviderRequest.ReturnProviderDetailsRequest(registerProviderRequest);
+            ProviderDetails providerDetails = ProviderDetailsMappingProfile.ToRegisterProviderDetailsRequest(registerProviderRequest);
 
-            providerDetails.UserId = user.Id;
+            ProviderDetailsMappingProfile.ToSetUserId(providerDetails, user);
 
             await _unitOfWork.ProviderDetailsRepository.AddAsync(providerDetails);
             await _unitOfWork.SaveAsync();
@@ -159,6 +151,19 @@ namespace HelloDoc_BusinessAccessLayer.Services
         private async Task<User?> GetUserByEmailAsync(string email)
         {
             return await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(user => user.Email == email);
+        }
+
+        public async Task<string> GenerateOtp(User user)
+        {
+            Random generator = new();
+            string otp = generator.Next(100000, 999999).ToString();
+            DateTime otpExpiryTime = DateTime.UtcNow.AddMinutes(10);
+
+            UserMappingProfile.ToGenerateOtp(user, otp, otpExpiryTime);
+            await _unitOfWork.UserRepository.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
+
+            return otp;
         }
 
         #endregion

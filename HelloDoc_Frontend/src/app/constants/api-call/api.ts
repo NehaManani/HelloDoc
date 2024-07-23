@@ -26,4 +26,7 @@ export class ApiCallConstant {
   //for admin
   public static readonly GET_PATIENT_LIST =
     this.AREA_ADMIN + '/patient-request-list';
+
+  public static readonly GET_STATUS_COUNT_LIST =
+    this.AREA_ADMIN + '/status-count-list';
 }

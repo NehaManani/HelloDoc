@@ -45,12 +45,12 @@ namespace HelloDoc_DataAccessLayer.Data
             );
 
             modelBuilder.Entity<UserStatus>().HasData(
-                new UserStatus { Id = 1, Status = "Initial" },
+                new UserStatus { Id = 1, Status = "New" },
                 new UserStatus { Id = 2, Status = "Pending" },
                 new UserStatus { Id = 3, Status = "Active" },
-                new UserStatus { Id = 4, Status = "Closed" },
-                new UserStatus { Id = 5, Status = "Deleted" },
-                new UserStatus { Id = 6, Status = "Blocked" }
+                new UserStatus { Id = 4, Status = "Conclude" },
+                new UserStatus { Id = 5, Status = "Close" },
+                new UserStatus { Id = 6, Status = "Unpaid" }
             );
 
             modelBuilder.Entity<Gender>().HasData(
