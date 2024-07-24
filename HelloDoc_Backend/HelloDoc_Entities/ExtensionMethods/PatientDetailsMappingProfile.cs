@@ -20,5 +20,34 @@ namespace HelloDoc_Entities.ExtensionMethods
         {
             patientDetails.UserId = user.Id;
         }
+
+        public static void ToConfirmationNumber(this PatientDetails patientDetails, string ConfirmationNumber)
+        {
+            patientDetails.ConfirmationNumber = ConfirmationNumber;
+        }
+
+        public static RegisterPatientRequest ToGetPatientDetails(this User user, PatientDetails? patientDetails)
+        {
+            return new RegisterPatientRequest
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                PhoneNumber = user.PhoneNumber,
+                Gender = user.Genders?.Id,
+                City = user.City,
+                Zip = user.Zip,
+                Address = user.Address,
+                EmergencyContactName = patientDetails?.EmergencyContactName,
+                EmergencyContactNumber = patientDetails?.EmergencyContactNumber,
+                MedicalHistory = patientDetails?.MedicalHistory,
+                Allergies = patientDetails?.Allergies,
+                CurrentMedications = patientDetails?.CurrentMedications,
+                BloodTypeId = patientDetails?.BloodTypeId,
+                Document = patientDetails?.Document,
+                ConfirmationNumber = patientDetails?.ConfirmationNumber
+            };
+        }
     }
 }

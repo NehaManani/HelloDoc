@@ -219,7 +219,9 @@
               Actions
             </span>
             <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-              <button ngbDropdownItem>View Case</button>
+              <button ngbDropdownItem (click)="viewCase(item.id)">
+                View Case
+              </button>
               <button ngbDropdownItem>Close Case</button>
               <button ngbDropdownItem>Block Request</button>
             </div>

@@ -4,9 +4,10 @@ import { Observable } from 'rxjs';
 import { ApiCallConstant } from '../../constants/api-call/api';
 import { IResponse } from '../../models/response/IResponse';
 import { IPaginatedResponse } from '../../models/response/IPaginatedResponse';
-import { IPatientData } from '../../models/request/IPatientData';
+import { IPatientListData } from '../../models/request/IPatientListData';
 import { IPaginatedRequest } from '../../models/request/IPaginatedRequest';
 import { IStatusCount } from '../../models/response/IStatusCounts';
+import { IPatientDetailsResponse } from '../../models/response/IPatientDetailsResponse';
 
 @Injectable({
   providedIn: 'root',
@@ -14,12 +15,13 @@ import { IStatusCount } from '../../models/response/IStatusCounts';
 export class AdminService {
   getPatientListApi = ApiCallConstant.GET_PATIENT_LIST;
   getStatusCountListApi = ApiCallConstant.GET_STATUS_COUNT_LIST;
+  getPatientDetailsById = ApiCallConstant.GET_PATIENT_DETAILS;
   constructor(private http: HttpClient) {}
 
   getPatientList(
     request: IPaginatedRequest
-  ): Observable<IResponse<IPaginatedResponse<IPatientData[]>>> {
-    return this.http.post<IResponse<IPaginatedResponse<IPatientData[]>>>(
+  ): Observable<IResponse<IPaginatedResponse<IPatientListData[]>>> {
+    return this.http.post<IResponse<IPaginatedResponse<IPatientListData[]>>>(
       this.getPatientListApi,
       request
     );
@@ -27,5 +29,13 @@ export class AdminService {
 
   statusCountList(): Observable<IResponse<IStatusCount>> {
     return this.http.get<IResponse<IStatusCount>>(this.getStatusCountListApi);
+  }
+
+  getPatientDetails(
+    userId: number
+  ): Observable<IResponse<IPatientDetailsResponse>> {
+    return this.http.get<IResponse<IPatientDetailsResponse>>(
+      `${this.getPatientDetailsById}?userId=${userId}`
+    );
   }
 }

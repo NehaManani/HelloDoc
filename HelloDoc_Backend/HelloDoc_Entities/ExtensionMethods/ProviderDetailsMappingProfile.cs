@@ -27,5 +27,10 @@ namespace HelloDoc_Entities.ExtensionMethods
         {
             providerDetails.UserId = user.Id;
         }
+
+        public static void ToConfirmationNumber(this ProviderDetails providerDetails, string ConfirmationNumber)
+        {
+            providerDetails.ConfirmationNumber = ConfirmationNumber;
+        }
     }
 }

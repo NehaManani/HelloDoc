@@ -119,6 +119,10 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
             PatientDetailsMappingProfile.ToSetUserId(patientDetails, user);
 
+            string ConfirmationNumber = await GenerateConfirmationNumber(user);
+
+            PatientDetailsMappingProfile.ToConfirmationNumber(patientDetails, ConfirmationNumber);
+
             await _unitOfWork.PatientDetailsRepository.AddAsync(patientDetails);
             await _unitOfWork.SaveAsync();
         }
@@ -141,6 +145,10 @@ namespace HelloDoc_BusinessAccessLayer.Services
             ProviderDetails providerDetails = ProviderDetailsMappingProfile.ToRegisterProviderDetailsRequest(registerProviderRequest);
 
             ProviderDetailsMappingProfile.ToSetUserId(providerDetails, user);
+
+            string ConfirmationNumber = await GenerateConfirmationNumber(user);
+
+            ProviderDetailsMappingProfile.ToConfirmationNumber(providerDetails, ConfirmationNumber);
 
             await _unitOfWork.ProviderDetailsRepository.AddAsync(providerDetails);
             await _unitOfWork.SaveAsync();
@@ -165,6 +173,19 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
             return otp;
         }
+
+
+        private async Task<string> GenerateConfirmationNumber(User user)
+        {
+            string firstNamePart = user.FirstName.Substring(0, 2).ToUpper();
+            string lastNamePart = user.LastName.Substring(0, 2).ToUpper();
+            string datePart = DateTime.UtcNow.ToString("MMdd");
+
+            string uniqueId = Guid.NewGuid().ToString("N").Substring(0, 4).ToUpper();
+
+            return $"{firstNamePart}{lastNamePart}{datePart}{uniqueId}";
+        }
+
 
         #endregion
     }

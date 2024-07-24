@@ -25,14 +25,7 @@ export class TextareaComponent {
   @Input() errorTitle!: string;
   @Input() className!: string;
   @Input() placeholder!: string;
-  formControl!: FormControl;
   @Input() value: string = '';
+  @Input() readonly: boolean = false;
   @Input({ required: false }) testId = '';
-
-  // ngOnInit(): void {
-  //   const control = this.parentForm.get(this.controlName);
-  //   if (control instanceof FormControl) {
-  //     this.formControl = control;
-  //   }
-  // }
 }

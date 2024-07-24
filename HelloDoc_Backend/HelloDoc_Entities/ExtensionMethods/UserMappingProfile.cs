@@ -72,6 +72,7 @@ namespace HelloDoc_Entities.ExtensionMethods
         {
             return new UserRequest
             {
+                Id = user.Id,
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 Email = user.Email,
@@ -96,6 +97,21 @@ namespace HelloDoc_Entities.ExtensionMethods
                 Unpaid = users.Count(user => user.UserStatuses.Status == "Unpaid"),
             };
         }
+
+        public static RegisterPatientRequest ToGetPatientDetails(this User user) => new()
+        {
+            Id = user.Id,
+            FirstName = user.FirstName,
+            LastName = user.LastName,
+            Email = user.Email,
+            Password = user.Password,
+            PhoneNumber = user.PhoneNumber,
+            City = user.City,
+            Zip = user.Zip,
+            Address = user.Address,
+            Gender = user.Gender,
+        };
+
     };
 }
 

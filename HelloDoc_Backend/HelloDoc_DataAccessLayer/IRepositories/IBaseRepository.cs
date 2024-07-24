@@ -45,5 +45,6 @@ namespace HelloDoc_DataAccessLayer.IRepositories
         Task<T?> GetFirstOrDefaultAsync(Expression<Func<T, bool>> filter, IEnumerable<Expression<Func<T, object>>> includes, string[]? thenIncludeExpressions);
 
         Task<PageListResponseDTO<T>> GetAllAsync(PageListRequestEntity<T> pageListRequest);
+
     }
 }

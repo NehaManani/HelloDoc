@@ -37,5 +37,14 @@ namespace HelloDoc_Api.Controllers
 
             return ResponseHelper.CreatedResponse(statusCountResponse, null, true);
         }
+
+        [HttpGet]
+        [Route("get-patient-details")]
+        public async Task<IActionResult> GetPatientDetailsById(int userId)
+        {
+            RegisterPatientRequest? registerPatientRequest = await _adminService.GetPatientDetails(userId);
+
+            return ResponseHelper.CreatedResponse(registerPatientRequest, null, true);
+        }
     }
 }

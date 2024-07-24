@@ -9,6 +9,7 @@ import { CreateProviderComponent } from './pages/authentication/create-provider/
 import { ResetPasswordComponent } from './pages/authentication/reset-password/reset-password.component';
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
 import { PatientListComponent } from './pages/admin/admin-dashboard/patient-list/patient-list.component';
+import { ViewCaseComponent } from './pages/admin/admin-dashboard/patient-list/view-case/view-case.component';
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
@@ -28,9 +29,8 @@ export const routes: Routes = [
         redirectTo: '/admin-dashboard/patient-list',
         pathMatch: 'full',
       },
-      { path: '**', component: PatientListComponent },
       { path: 'patient-list', component: PatientListComponent },
-      // Add other child routes here
+      { path: 'view-case/:id', component: ViewCaseComponent },
     ],
   },
 ];

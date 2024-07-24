@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IPatientData } from '../../../../models/request/IPatientData';
+import { IPatientListData } from '../../../../models/request/IPatientListData';
 import { NgClass, DecimalPipe, AsyncPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -16,6 +16,7 @@ import { IPaginatedResponse } from '../../../../models/response/IPaginatedRespon
 import { debounceTime, Subject } from 'rxjs';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { IStatusCount } from '../../../../models/response/IStatusCounts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-patient-list',
@@ -38,7 +39,7 @@ import { IStatusCount } from '../../../../models/response/IStatusCounts';
 })
 export class PatientListComponent {
   activeCard: string = 'All';
-  datasource: IPatientData[] = [];
+  datasource: IPatientListData[] = [];
   pageIndex = 1;
   pageSize = 7;
   collectionSize!: number;
@@ -57,7 +58,8 @@ export class PatientListComponent {
   };
   constructor(
     private adminService: AdminService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -113,7 +115,7 @@ export class PatientListComponent {
     };
 
     this.adminService.getPatientList(request).subscribe({
-      next: (response: IResponse<IPaginatedResponse<IPatientData[]>>) => {
+      next: (response: IResponse<IPaginatedResponse<IPatientListData[]>>) => {
         if (response.success) {
           this.datasource = response.data.records;
           this.collectionSize = response.data.totalRecords;
@@ -159,5 +161,9 @@ export class PatientListComponent {
       default:
         return 0;
     }
+  }
+
+  viewCase(caseId: number): void {
+    this.router.navigate(['admin-dashboard/view-case', caseId]);
   }
 }

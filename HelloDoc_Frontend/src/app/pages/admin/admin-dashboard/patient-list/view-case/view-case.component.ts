@@ -1,30 +1,32 @@
+import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { ButtonComponent } from '../../../shared/components/button/button.component';
-import { TextareaComponent } from '../../../shared/components/textarea/textarea.component';
 import {
+  ReactiveFormsModule,
+  FormsModule,
   FormControl,
   FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { IPatientInfoForm } from '../../../models/formgroup/patient-info-form';
-import { AlphabetOnlyInputComponent } from '../../../shared/components/alphabet-only-input/alphabet-only-input.component';
-import { ValidationPattern } from '../../../constants/validation/validation-pattern';
 import { RouterModule } from '@angular/router';
-import { InputComponent } from '../../../shared/components/input/input.component';
-import { PhoneNumberInputComponent } from '../../../shared/components/phone-number-input/phone-number-input.component';
-import { SelectComponent } from '../../../shared/components/select/select.component';
-import { DropdownItem } from '../../../shared/models/dropdown-item';
-import { CreatePatientService } from '../../../services/authentication/create-patient.service';
-import { NotificationService } from '../../../shared/services/notification.service';
-import { IResponse } from '../../../models/response/IResponse';
+import { FormSubmitDirective } from '../../../../../directives/form-submit.directive';
+import { AlphabetOnlyInputComponent } from '../../../../../shared/components/alphabet-only-input/alphabet-only-input.component';
+import { ButtonComponent } from '../../../../../shared/components/button/button.component';
+import { InputComponent } from '../../../../../shared/components/input/input.component';
+import { PhoneNumberInputComponent } from '../../../../../shared/components/phone-number-input/phone-number-input.component';
+import { SelectComponent } from '../../../../../shared/components/select/select.component';
+import { TextareaComponent } from '../../../../../shared/components/textarea/textarea.component';
 import { HttpErrorResponse } from '@angular/common/http';
-import { FormSubmitDirective } from '../../../directives/form-submit.directive';
+import { ValidationPattern } from '../../../../../constants/validation/validation-pattern';
+import { IPatientInfoForm } from '../../../../../models/formgroup/patient-info-form';
+import { IResponse } from '../../../../../models/response/IResponse';
+import { CreatePatientService } from '../../../../../services/authentication/create-patient.service';
+import { NotificationService } from '../../../../../shared/services/notification.service';
+import { DropdownItem } from '../../../../../shared/models/dropdown-item';
+import { AdminService } from '../../../../../services/admin/admin.service';
+import { IPatientDetailsResponse } from '../../../../../models/response/IPatientDetailsResponse';
 
 @Component({
-  selector: 'app-create-patient',
+  selector: 'app-view-case',
   standalone: true,
   imports: [
     ButtonComponent,
@@ -39,10 +41,11 @@ import { FormSubmitDirective } from '../../../directives/form-submit.directive';
     SelectComponent,
     FormSubmitDirective,
   ],
-  templateUrl: './create-patient.component.html',
-  styleUrl: './create-patient.component.scss',
+  templateUrl: './view-case.component.html',
+  styleUrl: './view-case.component.scss',
 })
-export class CreatePatientComponent {
+export class ViewCaseComponent {
+  confirmationNumber: string = '';
   uploadedDocument: string | ArrayBuffer | null = '';
   @ViewChild('photoInput') photoInput!: ElementRef;
   genderOptions: DropdownItem[] = [
@@ -124,18 +127,20 @@ export class CreatePatientComponent {
     ),
     medicalHistory: new FormControl(''),
     allergies: new FormControl(''),
-    currentMedications: new FormControl(
-      '',
-      Validators.compose([Validators.required])
-    ),
+    currentMedications: new FormControl(''),
     bloodTypeId: new FormControl(''),
     document: new FormControl(),
+    confirmationNumber: new FormControl(),
   });
 
   constructor(
-    private createPatientService: CreatePatientService,
+    private adminService: AdminService,
     private notificationService: NotificationService
   ) {}
+
+  ngOnInit(): void {
+    this.getPatientDetails();
+  }
 
   handlePictureFileChange(event: any) {
     const file = event.target.files?.[0];
@@ -148,26 +153,38 @@ export class CreatePatientComponent {
     };
   }
 
-  onSubmit() {
-    this.patientInfoForm.markAllAsTouched();
-    if (this.patientInfoForm.valid) {
-      this.patientInfoForm.value.document = this.uploadedDocument;
-      this.createPatientService
-        .SubmitRegisterPatientRequest(
-          this.patientInfoForm.value as IPatientInfoForm
-        )
-        .subscribe({
-          next: (response: IResponse<null>) => {
-            if (response.success) {
-              console.log(response);
-              this.notificationService.success(response.message);
-            }
-          },
-          error: (error: HttpErrorResponse) => {
-            console.log(error);
-            this.notificationService.error(error.error.messages);
-          },
-        });
-    }
+  getPatientDetails() {
+    this.adminService.getPatientDetails(50).subscribe({
+      next: (response: IResponse<IPatientDetailsResponse>) => {
+        if (response.success) {
+          console.log(response);
+          this.populateForm(response.data);
+        }
+      },
+      error: (error: HttpErrorResponse) => {
+        console.log(error);
+        this.notificationService.error(error.error.messages);
+      },
+    });
+  }
+
+  populateForm(data: any) {
+    this.confirmationNumber = data.confirmationNumber || ' ';
+    this.patientInfoForm.patchValue({
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      gender: data.gender,
+      city: data.city,
+      zip: data.zip,
+      address: data.address,
+      emergencyContactName: data.emergencyContactName,
+      emergencyContactNumber: data.emergencyContactNumber,
+      medicalHistory: data.medicalHistory,
+      allergies: data.allergies,
+      currentMedications: data.currentMedications,
+      bloodTypeId: data.bloodTypeId,
+    });
   }
 }

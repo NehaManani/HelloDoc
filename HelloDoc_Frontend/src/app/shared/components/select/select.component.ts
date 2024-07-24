@@ -27,5 +27,6 @@ export class SelectComponent {
   @Input() value: string = '';
   @Input() parentForm!: FormGroup;
   @Input() controlName!: string;
+  @Input() readonly: boolean = false;
   @Input({ required: false }) testId = '';
 }

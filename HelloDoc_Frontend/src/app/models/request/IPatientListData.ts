@@ -1,4 +1,5 @@
-export interface IPatientData {
+export interface IPatientListData {
+  id: number;
   firstName: string;
   lastName: string;
   email: string;

@@ -8,6 +8,9 @@ namespace HelloDoc_Entities.DataModels
     {
         public int UserId { get; set; }
 
+        [MaxLength(20)]
+        public string ConfirmationNumber { get; set; } = null!;
+
         [StringLength(20)]
         public string MedicalLicense { get; set; } = null!;
 

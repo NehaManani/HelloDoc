@@ -8,6 +8,9 @@ namespace HelloDoc_Entities.DataModels
     {
         public int UserId { get; set; }
 
+        [MaxLength(20)]
+        public string ConfirmationNumber { get; set; } = null!;
+
         [MaxLength(255)]
         public string? EmergencyContactName { get; set; }
 
@@ -21,7 +24,7 @@ namespace HelloDoc_Entities.DataModels
         public string? Allergies { get; set; }
 
         [MaxLength(500)]
-        public string? CurrentMedications { get; set; }
+        public string CurrentMedications { get; set; } = null!;
 
         public int? BloodTypeId { get; set; }
 

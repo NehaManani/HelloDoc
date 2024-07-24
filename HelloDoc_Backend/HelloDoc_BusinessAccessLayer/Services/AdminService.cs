@@ -56,5 +56,23 @@ namespace HelloDoc_BusinessAccessLayer.Services
 
             return statusCountResponse;
         }
+
+        public async Task<RegisterPatientRequest> GetPatientDetails(int userId)
+        {
+            User? user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == userId,
+                new List<Expression<Func<User, object>>> { u => u.UserRoles, u => u.UserStatuses, u => u.Genders });
+
+            if (user == null)
+            {
+                throw new Exception($"User with ID {userId} not found.");
+            }
+
+            PatientDetails? patientDetails = await _unitOfWork.PatientDetailsRepository.GetFirstOrDefaultAsync(
+                    pd => pd.UserId == userId);
+
+            RegisterPatientRequest? registerPatientRequest = PatientDetailsMappingProfile.ToGetPatientDetails(user, patientDetails);
+
+            return registerPatientRequest;
+        }
     }
 }

@@ -4,6 +4,8 @@ namespace HelloDoc_Entities.DTOs.Request
 {
     public class UserRequest
     {
+        public int Id { get; set; }
+
         [Required]
         public string FirstName { get; set; } = null!;
 

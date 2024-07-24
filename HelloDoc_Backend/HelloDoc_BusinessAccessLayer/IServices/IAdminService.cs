@@ -7,5 +7,6 @@ namespace HelloDoc_BusinessAccessLayer.IServices
     {
         Task<PageListResponseDTO<UserRequest>> GetPatientRequestList(PageListRequestDTO admitRequestList);
         Task<StatusCountResponse> StatusCountRequest();
+        Task<RegisterPatientRequest> GetPatientDetails(int userId);
     }
 }

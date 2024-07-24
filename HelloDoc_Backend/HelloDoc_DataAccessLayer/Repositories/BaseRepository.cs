@@ -189,5 +189,6 @@ namespace HelloDoc_DataAccessLayer.Repositories
 
             return new PageListResponseDTO<T>(pageListRequest.PageIndex, pageListRequest.PageSize, totalRecords, records);
         }
+
     }
 }
