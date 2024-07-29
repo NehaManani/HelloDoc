@@ -10,6 +10,7 @@ import { ResetPasswordComponent } from './pages/authentication/reset-password/re
 import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-dashboard.component';
 import { PatientListComponent } from './pages/admin/admin-dashboard/patient-list/patient-list.component';
 import { ViewCaseComponent } from './pages/admin/admin-dashboard/patient-list/view-case/view-case.component';
+import { AuthGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
@@ -32,5 +33,6 @@ export const routes: Routes = [
       { path: 'patient-list', component: PatientListComponent },
       { path: 'view-case/:userId', component: ViewCaseComponent },
     ],
+    canActivate: [AuthGuard],
   },
 ];
