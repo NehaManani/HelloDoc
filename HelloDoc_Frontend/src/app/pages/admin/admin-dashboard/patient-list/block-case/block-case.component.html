@@ -1,0 +1,57 @@
+<div class="modal-header d-flex justify-content-between align-items-center">
+  <h5 class="modal-title">Block Case</h5>
+  <button
+    type="button"
+    class="close btn rounded-pill"
+    aria-label="Close"
+    (click)="close()"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="blockCaseForm">
+    <div class="patientName mb-3">
+      <app-alphabet-only-input
+        label="Patient Name"
+        controlName="patientName"
+        [parentForm]="blockCaseForm"
+        className="app-input form-control"
+        placeholder="Patient Name"
+        type="text"
+        errorTitle="Patient Name"
+        testId="patientName"
+        [value]="patientName"
+      />
+    </div>
+    <div class="cancellation mb-3">
+      <app-input
+        label="Reasons for Block"
+        controlName="reasonForBlock"
+        [parentForm]="blockCaseForm"
+        className="app-input form-control"
+        placeholder="Reasons for Block"
+        type="text"
+        errorTitle="Reasons for Block Case"
+      />
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <app-button
+    label="Block"
+    title="Block"
+    type="button"
+    className="mt-3 px-3 modal-btn"
+    (btnClick)="blockCase()"
+  >
+  </app-button>
+  <app-button
+    label="cancel"
+    title="cancel"
+    type="button"
+    className="mt-3 px-3 cancel-modal-btn modal-btn"
+    (btnClick)="close()"
+  >
+  </app-button>
+</div>

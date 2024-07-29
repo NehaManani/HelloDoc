@@ -7,7 +7,7 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { RouterModule } from '@angular/router';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FormSubmitDirective } from '../../../../../directives/form-submit.directive';
 import { AlphabetOnlyInputComponent } from '../../../../../shared/components/alphabet-only-input/alphabet-only-input.component';
 import { ButtonComponent } from '../../../../../shared/components/button/button.component';
@@ -17,9 +17,7 @@ import { SelectComponent } from '../../../../../shared/components/select/select.
 import { TextareaComponent } from '../../../../../shared/components/textarea/textarea.component';
 import { HttpErrorResponse } from '@angular/common/http';
 import { ValidationPattern } from '../../../../../constants/validation/validation-pattern';
-import { IPatientInfoForm } from '../../../../../models/formgroup/patient-info-form';
 import { IResponse } from '../../../../../models/response/IResponse';
-import { CreatePatientService } from '../../../../../services/authentication/create-patient.service';
 import { NotificationService } from '../../../../../shared/services/notification.service';
 import { DropdownItem } from '../../../../../shared/models/dropdown-item';
 import { AdminService } from '../../../../../services/admin/admin.service';
@@ -45,6 +43,7 @@ import { IPatientDetailsResponse } from '../../../../../models/response/IPatient
   styleUrl: './view-case.component.scss',
 })
 export class ViewCaseComponent {
+  userId!: number;
   confirmationNumber: string = '';
   uploadedDocument: string | ArrayBuffer | null = '';
   @ViewChild('photoInput') photoInput!: ElementRef;
@@ -65,66 +64,17 @@ export class ViewCaseComponent {
   ];
 
   patientInfoForm = new FormGroup({
-    firstName: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern(ValidationPattern.names),
-      ])
-    ),
-    lastName: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern(ValidationPattern.names),
-      ])
-    ),
-    email: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(2),
-        Validators.pattern(ValidationPattern.email),
-      ])
-    ),
-    password: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.minLength(6),
-        Validators.pattern(ValidationPattern.password),
-      ])
-    ),
-    phoneNumber: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.pattern(ValidationPattern.phoneNumber),
-      ])
-    ),
-    gender: new FormControl('', [Validators.required]),
-    city: new FormControl('', [Validators.minLength(2)]),
-    zip: new FormControl('', [
-      Validators.maxLength(6),
-      Validators.pattern(/^[0-9]{6}$/),
-    ]),
+    firstName: new FormControl(''),
+    lastName: new FormControl(''),
+    email: new FormControl(''),
+    password: new FormControl(''),
+    phoneNumber: new FormControl(''),
+    gender: new FormControl(''),
+    city: new FormControl(''),
+    zip: new FormControl(''),
     address: new FormControl(''),
-    emergencyContactName: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.pattern(ValidationPattern.names),
-      ])
-    ),
-    emergencyContactNumber: new FormControl(
-      '',
-      Validators.compose([
-        Validators.required,
-        Validators.pattern(ValidationPattern.phoneNumber),
-      ])
-    ),
+    emergencyContactName: new FormControl(''),
+    emergencyContactNumber: new FormControl(''),
     medicalHistory: new FormControl(''),
     allergies: new FormControl(''),
     currentMedications: new FormControl(''),
@@ -135,11 +85,15 @@ export class ViewCaseComponent {
 
   constructor(
     private adminService: AdminService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
-    this.getPatientDetails();
+    this.route.paramMap.subscribe((params) => {
+      const userId = Number(params.get('userId'));
+      this.getPatientDetails(userId);
+    });
   }
 
   handlePictureFileChange(event: any) {
@@ -147,22 +101,21 @@ export class ViewCaseComponent {
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
-      console.log(reader.result);
       this.patientInfoForm.value.document = reader.result;
       this.uploadedDocument = reader.result;
     };
   }
 
-  getPatientDetails() {
-    this.adminService.getPatientDetails(50).subscribe({
+  getPatientDetails(userId: number) {
+    this.adminService.getPatientDetails(userId).subscribe({
       next: (response: IResponse<IPatientDetailsResponse>) => {
         if (response.success) {
-          console.log(response);
+          console.log(response.data);
+
           this.populateForm(response.data);
         }
       },
       error: (error: HttpErrorResponse) => {
-        console.log(error);
         this.notificationService.error(error.error.messages);
       },
     });
@@ -170,6 +123,7 @@ export class ViewCaseComponent {
 
   populateForm(data: any) {
     this.confirmationNumber = data.confirmationNumber || ' ';
+    this.uploadedDocument = data.document || '';
     this.patientInfoForm.patchValue({
       firstName: data.firstName,
       lastName: data.lastName,
@@ -185,6 +139,11 @@ export class ViewCaseComponent {
       allergies: data.allergies,
       currentMedications: data.currentMedications,
       bloodTypeId: data.bloodTypeId,
+      document: data.document,
     });
+  }
+
+  isImageDocument(document: any): boolean {
+    return document.startsWith('data:image/');
   }
 }

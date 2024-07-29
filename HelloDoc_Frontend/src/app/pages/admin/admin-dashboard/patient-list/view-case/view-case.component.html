@@ -165,19 +165,22 @@
               [readonly]="true"
             />
           </div>
-          <div class="form-group col-md-12 mt-3">
+
+          <!-- Document Display -->
+          @if (uploadedDocument) {
+          <div class="form-group col-md-12 mt-3 d-flex flex-column">
             <label class="label--style">Document</label>
-            <input
-              type="file"
-              (change)="handlePictureFileChange($event)"
-              #photoInput
-              id="photoInput"
-              accept="image/*"
-              class="app-input field"
-              formControlName="document"
-              readonly="true"
-            />
+            @if (isImageDocument(uploadedDocument)) {<img
+              [src]="uploadedDocument"
+              alt="Uploaded Document"
+              class="img-thumbnail"
+            />} @else {
+            <a [href]="uploadedDocument" download="document"
+              >Download Document Here</a
+            >}
           </div>
+          }
+
           <div class="form-group col-md-12 mt-3">
             <app-textarea
               label="Medical History"
@@ -215,7 +218,7 @@
           >
           </app-button>
           <app-button
-            [routerLink]="['/user-selection']"
+            [routerLink]="['/admin-dashboard']"
             label="cancel"
             title="cancel"
             type="button"

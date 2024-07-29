@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ApiCallConstant } from '../../constants/api-call/api';
 import { IResponse } from '../../models/response/IResponse';
@@ -8,6 +8,9 @@ import { IPatientListData } from '../../models/request/IPatientListData';
 import { IPaginatedRequest } from '../../models/request/IPaginatedRequest';
 import { IStatusCount } from '../../models/response/IStatusCounts';
 import { IPatientDetailsResponse } from '../../models/response/IPatientDetailsResponse';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { BlockCaseComponent } from '../../pages/admin/admin-dashboard/patient-list/block-case/block-case.component';
+import { IBlockCase } from '../../models/request/IBlockCase';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +18,9 @@ import { IPatientDetailsResponse } from '../../models/response/IPatientDetailsRe
 export class AdminService {
   getPatientListApi = ApiCallConstant.GET_PATIENT_LIST;
   getStatusCountListApi = ApiCallConstant.GET_STATUS_COUNT_LIST;
-  getPatientDetailsById = ApiCallConstant.GET_PATIENT_DETAILS;
+  getPatientDetailsByIdApi = ApiCallConstant.GET_PATIENT_DETAILS;
+
+  blockCaseApi = ApiCallConstant.BLOCK_CASE;
   constructor(private http: HttpClient) {}
 
   getPatientList(
@@ -35,7 +40,11 @@ export class AdminService {
     userId: number
   ): Observable<IResponse<IPatientDetailsResponse>> {
     return this.http.get<IResponse<IPatientDetailsResponse>>(
-      `${this.getPatientDetailsById}?userId=${userId}`
+      `${this.getPatientDetailsByIdApi}?userId=${userId}`
     );
+  }
+
+  blockCase(request: IBlockCase): Observable<IResponse<null>> {
+    return this.http.post<IResponse<null>>(this.blockCaseApi, request);
   }
 }

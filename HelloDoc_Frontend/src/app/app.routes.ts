@@ -30,7 +30,7 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       { path: 'patient-list', component: PatientListComponent },
-      { path: 'view-case/:id', component: ViewCaseComponent },
+      { path: 'view-case/:userId', component: ViewCaseComponent },
     ],
   },
 ];

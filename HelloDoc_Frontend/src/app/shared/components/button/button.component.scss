@@ -38,6 +38,18 @@
   color: #00aaff;
   cursor: pointer;
 }
-.logout-btn{
-  
+.modal-btn {
+  width: 100%;
+  height: 40px;
+  border: 0;
+  background: #00bce8;
+  border-radius: 7px;
+  outline: none;
+  color: #ffffff;
+  cursor: pointer;
+}
+.cancel-modal-btn {
+  background: #ffffff;
+  color: #00bce8;
+  border: 1.5px solid #00bce8;
 }

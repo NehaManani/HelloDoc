@@ -45,6 +45,8 @@ namespace HelloDoc_Entities.DataModels
 
         public byte Status { get; set; }
 
+        public string? ReasonForBlock { get; set; }
+
         [ForeignKey(nameof(Role))]
         public virtual UserRole UserRoles { get; set; } = null!;
 

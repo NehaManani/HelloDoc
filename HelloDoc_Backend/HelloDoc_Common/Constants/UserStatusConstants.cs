@@ -8,5 +8,6 @@ namespace HelloDoc_Common.Constants
         public const int Conclude = 4;
         public const int Close = 5;
         public const int Unpaid = 6;
+        public const int Block = 7;
     }
 }

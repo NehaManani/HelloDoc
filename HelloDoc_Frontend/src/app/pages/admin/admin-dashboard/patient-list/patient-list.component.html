@@ -160,6 +160,7 @@
   </div>
 
   <!-- table of Contents -->
+
   @if (getActiveCardCount()) {
   <table class="table table-striped table-bordered">
     <thead class="thead-dark">
@@ -222,8 +223,14 @@
               <button ngbDropdownItem (click)="viewCase(item.id)">
                 View Case
               </button>
-              <button ngbDropdownItem>Close Case</button>
-              <button ngbDropdownItem>Block Request</button>
+              <button
+                ngbDropdownItem
+                (click)="
+                  openBlockCase(item.id, item.firstName + ' ' + item.lastName)
+                "
+              >
+                Block Case
+              </button>
             </div>
           </div>
         </td>

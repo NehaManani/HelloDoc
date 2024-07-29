@@ -87,7 +87,7 @@ namespace HelloDoc_Entities.ExtensionMethods
 
         public static StatusCountResponse ToStatusCountResponse(this IEnumerable<User> users)
         {
-            return new StatusCountResponse
+            return new()
             {
                 New = users.Count(user => user.UserStatuses.Status == "New"),
                 Pending = users.Count(user => user.UserStatuses.Status == "Pending"),
@@ -112,6 +112,11 @@ namespace HelloDoc_Entities.ExtensionMethods
             Gender = user.Gender,
         };
 
+        public static void ToSetReasonForBlock(this BlockCaseRequest blockCaseRequest, User user)
+        {
+            user.Status = UserStatusConstants.Block;
+            user.ReasonForBlock = blockCaseRequest.ReasonForBlock;
+        }
     };
 }
 

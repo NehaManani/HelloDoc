@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
 import { IPatientInfoForm } from '../../../models/formgroup/patient-info-form';
 import { AlphabetOnlyInputComponent } from '../../../shared/components/alphabet-only-input/alphabet-only-input.component';
 import { ValidationPattern } from '../../../constants/validation/validation-pattern';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { InputComponent } from '../../../shared/components/input/input.component';
 import { PhoneNumberInputComponent } from '../../../shared/components/phone-number-input/phone-number-input.component';
 import { SelectComponent } from '../../../shared/components/select/select.component';
@@ -134,7 +134,8 @@ export class CreatePatientComponent {
 
   constructor(
     private createPatientService: CreatePatientService,
-    private notificationService: NotificationService
+    private notificationService: NotificationService,
+    private router: Router
   ) {}
 
   handlePictureFileChange(event: any) {
@@ -159,8 +160,8 @@ export class CreatePatientComponent {
         .subscribe({
           next: (response: IResponse<null>) => {
             if (response.success) {
-              console.log(response);
               this.notificationService.success(response.message);
+              this.router.navigate(['/login']);
             }
           },
           error: (error: HttpErrorResponse) => {

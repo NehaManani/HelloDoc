@@ -4,6 +4,7 @@ using HelloDoc_DataAccessLayer.Helpers;
 using HelloDoc_Entities.DTOs.Common;
 using HelloDoc_Entities.DTOs.Request;
 using Microsoft.AspNetCore.Mvc;
+using static HelloDoc_Common.Constants.MessageConstants;
 
 namespace HelloDoc_Api.Controllers
 {
@@ -45,6 +46,15 @@ namespace HelloDoc_Api.Controllers
             RegisterPatientRequest? registerPatientRequest = await _adminService.GetPatientDetails(userId);
 
             return ResponseHelper.CreatedResponse(registerPatientRequest, null, true);
+        }
+
+        [HttpPost]
+        [Route("block-user-case")]
+        public async Task<IActionResult> BlockUserCase(BlockCaseRequest blockCaseRequest)
+        {
+            await _adminService.BlockUserRequest(blockCaseRequest);
+
+            return ResponseHelper.CreatedResponse(string.Empty, SuccessMessage.BLOCK_USER, true);
         }
     }
 }

@@ -20,7 +20,7 @@ namespace HelloDoc_Entities.ExtensionMethods
             HipaaCompliance = registerProviderRequest.HipaaCompliance,
             HipaaComplianceDocument = registerProviderRequest.HipaaComplianceDocument,
             NonDisclosureAgreement = registerProviderRequest.NonDisclosureAgreement,
-            NonDisclosureDocument = registerProviderRequest.NonDisclosureDocument
+            NonDisclosureDocument = registerProviderRequest.NonDisclosureDocument,
         };
 
         public static void ToSetUserId(this ProviderDetails providerDetails, User user)

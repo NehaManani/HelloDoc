@@ -50,7 +50,8 @@ namespace HelloDoc_DataAccessLayer.Data
                 new UserStatus { Id = 3, Status = "Active" },
                 new UserStatus { Id = 4, Status = "Conclude" },
                 new UserStatus { Id = 5, Status = "Close" },
-                new UserStatus { Id = 6, Status = "Unpaid" }
+                new UserStatus { Id = 6, Status = "Unpaid" },
+                new UserStatus { Id = 7, Status = "Block" }
             );
 
             modelBuilder.Entity<Gender>().HasData(

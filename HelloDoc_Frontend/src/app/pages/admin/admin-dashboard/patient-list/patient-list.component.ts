@@ -17,6 +17,7 @@ import { debounceTime, Subject } from 'rxjs';
 import { NotificationService } from '../../../../shared/services/notification.service';
 import { IStatusCount } from '../../../../models/response/IStatusCounts';
 import { Router } from '@angular/router';
+import { ModalService } from '../../../../services/modal/modal.service';
 
 @Component({
   selector: 'app-patient-list',
@@ -59,7 +60,8 @@ export class PatientListComponent {
   constructor(
     private adminService: AdminService,
     private notificationService: NotificationService,
-    private router: Router
+    private router: Router,
+    private modalService: ModalService
   ) {}
 
   ngOnInit() {
@@ -103,8 +105,6 @@ export class PatientListComponent {
   }
 
   getPatientListRequest() {
-    console.log(this.status);
-
     const request: IPaginatedRequest = {
       pageIndex: this.pageIndex,
       pageSize: this.pageSize,
@@ -163,7 +163,11 @@ export class PatientListComponent {
     }
   }
 
-  viewCase(caseId: number): void {
-    this.router.navigate(['admin-dashboard/view-case', caseId]);
+  viewCase(userId: number): void {
+    this.router.navigate(['admin-dashboard/view-case', userId]);
+  }
+
+  openBlockCase(userId: number, name: string) {
+    this.modalService.openBlockCase(userId, name);
   }
 }

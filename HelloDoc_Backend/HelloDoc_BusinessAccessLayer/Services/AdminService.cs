@@ -1,11 +1,14 @@
 using System.Linq.Expressions;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_Common.Constants;
+using HelloDoc_Common.Exceptions;
 using HelloDoc_DataAccessLayer.IRepositories;
 using HelloDoc_Entities.DataModels;
 using HelloDoc_Entities.DTOs.Common;
 using HelloDoc_Entities.DTOs.Request;
 using HelloDoc_Entities.ExtensionMethods;
+using Microsoft.AspNetCore.Http;
+using static HelloDoc_Common.Constants.MessageConstants;
 
 namespace HelloDoc_BusinessAccessLayer.Services
 {
@@ -29,6 +32,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
                 IncludeExpressions = [x => x.UserRoles, x => x.Genders],
                 Predicate = user =>
                         user.Role == 2 &&
+                        user.Status != UserStatusConstants.Block &&
                         (string.IsNullOrEmpty(patientRequest.SearchQuery) ||
                         user.FirstName.Trim().ToLower().Contains(patientRequest.SearchQuery.Trim().ToLower()) ||
                         user.LastName.Trim().ToLower().Contains(patientRequest.SearchQuery.Trim().ToLower()) ||
@@ -63,9 +67,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
                 new List<Expression<Func<User, object>>> { u => u.UserRoles, u => u.UserStatuses, u => u.Genders });
 
             if (user == null)
-            {
-                throw new Exception($"User with ID {userId} not found.");
-            }
+                throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
 
             PatientDetails? patientDetails = await _unitOfWork.PatientDetailsRepository.GetFirstOrDefaultAsync(
                     pd => pd.UserId == userId);
@@ -73,6 +75,19 @@ namespace HelloDoc_BusinessAccessLayer.Services
             RegisterPatientRequest? registerPatientRequest = PatientDetailsMappingProfile.ToGetPatientDetails(user, patientDetails);
 
             return registerPatientRequest;
+        }
+
+        public async Task BlockUserRequest(BlockCaseRequest blockCaseRequest)
+        {
+            User? user = await _unitOfWork.UserRepository.GetFirstOrDefaultAsync(u => u.Id == blockCaseRequest.UserId);
+
+            if (user == null)
+                throw new CustomException(StatusCodes.Status404NotFound, ErrorMessage.USER_NOT_FOUND);
+
+            UserMappingProfile.ToSetReasonForBlock(blockCaseRequest, user);
+
+            await _unitOfWork.UserRepository.UpdateAsync(user);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

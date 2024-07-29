@@ -32,4 +32,6 @@ export class ApiCallConstant {
 
   public static readonly GET_PATIENT_DETAILS =
     this.AREA_ADMIN + '/get-patient-details';
+
+  public static readonly BLOCK_CASE = this.AREA_ADMIN + '/block-user-case';
 }

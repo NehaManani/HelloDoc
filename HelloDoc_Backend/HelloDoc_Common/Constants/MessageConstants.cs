@@ -12,6 +12,7 @@ namespace HelloDoc_Common.Constants
             public const string OTP_VERIFIED = "Otp verified successfully!";
             public const string OTP_SENT = "OTP has been sent to your registered email.";
             public const string RESET_PASSWORD = "Password reset successfully!";
+            public const string BLOCK_USER = "User blocked!";
         }
 
         #endregion

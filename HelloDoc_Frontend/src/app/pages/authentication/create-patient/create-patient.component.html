@@ -25,7 +25,7 @@
               label="First Name"
               controlName="firstName"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="First Name"
               type="text"
               errorTitle="First Name"
@@ -37,7 +37,7 @@
               label="Last Name"
               controlName="lastName"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Last Name"
               type="text"
               errorTitle="Last Name"
@@ -49,7 +49,7 @@
               label="Email"
               controlName="email"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Email"
               type="email"
               errorTitle="Email"
@@ -61,7 +61,7 @@
               label="Password"
               controlName="password"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Password"
               type="text"
               errorTitle="Password"
@@ -79,7 +79,7 @@
               [parentForm]="patientInfoForm"
               controlName="phoneNumber"
               type="text"
-              className="app-input"
+              className="app-input form-control"
             />
           </div>
           <div class="form-group col-md-6 mt-3">
@@ -89,7 +89,7 @@
               controlName="gender"
               [parentForm]="patientInfoForm"
               placeholder="Select Gender"
-              className="app-select"
+              className="app-select form-control"
               errorTitle="Gender"
             />
           </div>
@@ -106,7 +106,7 @@
               label="City"
               controlName="city"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="City"
               type="text"
               errorTitle="City"
@@ -117,7 +117,7 @@
             <app-input
               label="Zip"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Enter Zip"
               errorTitle="Zip"
               controlName="zip"
@@ -131,7 +131,7 @@
               placeholder="Address"
               controlName="address"
               [parentForm]="patientInfoForm"
-              className="app-textarea title-description"
+              className="app-textarea title-description form-control"
               errorTitle="Address"
               testId="address"
             />
@@ -151,7 +151,7 @@
               controlName="bloodTypeId"
               [parentForm]="patientInfoForm"
               placeholder="Select Blood Type"
-              className="app-select"
+              className="app-select form-control"
               errorTitle="bloodType"
             />
           </div>
@@ -162,8 +162,8 @@
               (change)="handlePictureFileChange($event)"
               #photoInput
               id="photoInput"
-              accept="image/*"
-              class="app-input field"
+              accept=".pdf, .jpg, .jpeg, .png, .doc, .docx"
+              class="app-input field form-control"
               formControlName="document"
             />
           </div>
@@ -172,7 +172,7 @@
               label="Emergency Contact Name"
               controlName="emergencyContactName"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Emergency Contact Name"
               type="text"
               errorTitle="Emergency Contact Name"
@@ -187,7 +187,7 @@
               [parentForm]="patientInfoForm"
               controlName="emergencyContactNumber"
               type="text"
-              className="app-input"
+              className="app-input form-control"
             />
           </div>
           <div class="form-group col-md-12 mt-3">
@@ -195,7 +195,7 @@
               label="Medical History"
               controlName="medicalHistory"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Medical History"
               type="text"
               errorTitle="Medical History"
@@ -207,7 +207,7 @@
               label="Allergies"
               controlName="allergies"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Allergies"
               type="text"
               errorTitle="Allergies"
@@ -219,7 +219,7 @@
               label="Current Medications (Symptoms)"
               controlName="currentMedications"
               [parentForm]="patientInfoForm"
-              className="app-input"
+              className="app-input form-control"
               placeholder="Current Medications"
               type="text"
               errorTitle="Current Medications"
