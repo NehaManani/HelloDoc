@@ -28,6 +28,10 @@ namespace HelloDoc_Common.Constants
 
         public const string DEFAULT_SORTCOLUMN = "Id";
 
+        public const string USER_ID_CLAIM = "UserId";
+
+        public const string ZERO_STRING = "0";
+
         #region ModelStateConstant
 
         public static class ModelStateConstant
@@ -37,5 +41,26 @@ namespace HelloDoc_Common.Constants
         }
 
         #endregion ModelStateConstant
+
+        #region Policy Attribute
+
+        public const string ADMIN_POLICY = "Admin";
+
+        public const string PATIENT_POLICY = "Patient";
+
+        public const string PROVIDER_POLICY = "Provider";
+
+        public const string ALL_USER_POLICY = "AllUser";
+
+        #endregion Policy Attribute
+
+
+        #region Session Constant
+
+        public const string LOGGED_USER = "LoggedUser";
+
+        public const string BEARER = "Bearer ";
+
+        #endregion Session Constant
     }
 }

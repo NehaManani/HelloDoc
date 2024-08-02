@@ -1,3 +1,4 @@
+using HelloDoc_Api.Helpers;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_Common.Exceptions;
 using HelloDoc_DataAccessLayer.Helpers;
@@ -10,6 +11,7 @@ namespace HelloDoc_Api.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [AdminPolicy]
     public class AdminController : ControllerBase
     {
 
@@ -20,21 +22,21 @@ namespace HelloDoc_Api.Controllers
             _adminService = adminService;
         }
 
-        [HttpPost("patient-request-list")]
-        public async Task<IActionResult> GetPatientRequestList(PageListRequestDTO pageListRequest)
+        [HttpPost("patient-provider-list")]
+        public async Task<IActionResult> GetPatientProviderRequestList(PageListRequestDTO pageListRequest, int userType)
         {
             if (!ModelState.IsValid) throw new ModelStateException(ModelState);
 
-            PageListResponseDTO<UserRequest>? response = await _adminService.GetPatientRequestList(pageListRequest);
+            PageListResponseDTO<UserRequest>? response = await _adminService.GetPatientProviderRequestList(pageListRequest, userType);
 
             return ResponseHelper.CreatedResponse(response, null, success: true);
         }
 
         [HttpGet]
         [Route("status-count-list")]
-        public async Task<IActionResult> StatusCountList()
+        public async Task<IActionResult> StatusCountList(int userType)
         {
-            StatusCountResponse? statusCountResponse = await _adminService.StatusCountRequest();
+            StatusCountResponse? statusCountResponse = await _adminService.StatusCountRequest(userType);
 
             return ResponseHelper.CreatedResponse(statusCountResponse, null, true);
         }

@@ -18,7 +18,12 @@ export class VerifyOtpService {
     otp: string | null | undefined
   ): Observable<IResponse<string>> {
     const body = { email, otp };
-    return this.http.post<IResponse<string>>(`${this.verifyOtpApi}`, body);
+    return this.http.post<IResponse<string>>(`${this.verifyOtpApi}`, body, {
+      withCredentials: true,
+      headers: {
+        credentials: 'include',
+      },
+    });
   }
 
   resendOtp(email: string | null): Observable<IResponse<null>> {

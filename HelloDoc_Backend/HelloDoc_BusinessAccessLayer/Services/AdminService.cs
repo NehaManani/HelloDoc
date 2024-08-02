@@ -21,7 +21,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task<PageListResponseDTO<UserRequest>> GetPatientRequestList(PageListRequestDTO patientRequest)
+        public async Task<PageListResponseDTO<UserRequest>> GetPatientProviderRequestList(PageListRequestDTO patientRequest, int userType)
         {
             PageListRequestEntity<User> pageListRequestEntity = new()
             {
@@ -31,7 +31,7 @@ namespace HelloDoc_BusinessAccessLayer.Services
                 SortOrder = patientRequest.SortOrder,
                 IncludeExpressions = [x => x.UserRoles, x => x.Genders],
                 Predicate = user =>
-                        user.Role == 2 &&
+                        user.Role == userType &&
                         user.Status != UserStatusConstants.Block &&
                         (string.IsNullOrEmpty(patientRequest.SearchQuery) ||
                         user.FirstName.Trim().ToLower().Contains(patientRequest.SearchQuery.Trim().ToLower()) ||
@@ -47,10 +47,10 @@ namespace HelloDoc_BusinessAccessLayer.Services
             return new PageListResponseDTO<UserRequest>(pageListResponse.PageIndex, pageListResponse.PageSize, pageListResponse.TotalRecords, patientRequestListResponseDTOs);
         }
 
-        public async Task<StatusCountResponse> StatusCountRequest()
+        public async Task<StatusCountResponse> StatusCountRequest(int userType)
         {
             IEnumerable<User> users = await _unitOfWork.UserRepository.GetAllAsync(
-                user => user.Role == UserRoleConstants.Patient,
+                user => user.Role == userType,
                 new List<Expression<Func<User, object>>>
                 {
                     user => user.UserStatuses

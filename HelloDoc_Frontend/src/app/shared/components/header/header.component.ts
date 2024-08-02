@@ -25,7 +25,7 @@ export class HeaderComponent {
     if (this.role === '1') {
       this.navTabs = [
         { label: 'Dashboard', link: '/admin-dashboard' },
-        { label: 'Provider Location', link: '/location' },
+        { label: 'Provider Dashboard', link: '/admin-dashboard/provider-list' },
         { label: 'My Profile', link: '/my-profile' },
         { label: 'Providers', link: '/providers' },
         { label: 'Partners', link: '/partners' },

@@ -11,12 +11,18 @@ import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 import { IMAGE_CONFIG } from '@angular/common';
 import { provideToastr } from 'ngx-toastr';
 import { LoaderInterceptor } from './interceptors/loader.interceptor';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     importProvidersFrom(BrowserAnimationsModule),
     provideHttpClient(withInterceptorsFromDi()),
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LoaderInterceptor,

@@ -1,0 +1,111 @@
+.card {
+    text-align: center;
+  }
+  .card-body {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-title {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+  .card-text {
+    margin: 0;
+    font-size: x-large;
+    font-weight: bold;
+  }
+  .card-icon {
+    font-size: large;
+  }
+  .new-card {
+    background-color: #c5cfe4;
+    border: 2px solid #334a7a;
+    color: #334a7a;
+  }
+  .pending-card {
+    background-color: #cfedf4;
+    border: 2px solid #47a2b7;
+    color: #47a2b7;
+  }
+  .active-card {
+    background-color: #bcd6bf;
+    border: 2px solid #416a3e;
+    color: #4c7849;
+  }
+  .conclude-card {
+    background-color: #f6e6ed;
+    border: 2px solid #c15f96;
+    color: #c15f96;
+  }
+  .close-card {
+    background-color: #b7d4e9;
+    border: 2px solid #4782b1;
+    color: #4782b1;
+  }
+  .unpaid-card {
+    background-color: #d3bef3;
+    border: 2px solid #6f36a1;
+    color: #6f36a1;
+  }
+  .active-card,
+  .pending-card,
+  .new-card,
+  .conclude-card,
+  .close-card,
+  .unpaid-card {
+    cursor: pointer;
+  }
+  .new-active {
+    background-color: #334a7a !important;
+    color: #fff !important;
+  }
+  .pending-active {
+    background-color: #47a2b7 !important;
+    color: #fff !important;
+  }
+  .active-active {
+    background-color: #4c7849 !important;
+    color: #fff !important;
+  }
+  .conclude-active {
+    background-color: #c15f96 !important;
+    color: #fff !important;
+  }
+  .close-active {
+    background-color: #4782b1 !important;
+    color: #fff !important;
+  }
+  .unpaid-active {
+    background-color: #6f36a1 !important;
+    color: #fff !important;
+  }
+  .arrow {
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+  }
+  .new-card-arrow {
+    border-top: 10px solid #334a7a;
+  }
+  .pending-card-arrow {
+    border-top: 10px solid #47a2b7;
+  }
+  .active-card-arrow {
+    border-top: 10px solid #4c7849;
+  }
+  .conclude-card-arrow {
+    border-top: 10px solid #c15f96;
+  }
+  .close-card-arrow {
+    border-top: 10px solid #4782b1;
+  }
+  .unpaid-card-arrow {
+    border-top: 10px solid #6f36a1;
+  }
+  

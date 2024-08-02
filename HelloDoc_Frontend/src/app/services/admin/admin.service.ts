@@ -4,36 +4,39 @@ import { Observable } from 'rxjs';
 import { ApiCallConstant } from '../../constants/api-call/api';
 import { IResponse } from '../../models/response/IResponse';
 import { IPaginatedResponse } from '../../models/response/IPaginatedResponse';
-import { IPatientListData } from '../../models/request/IPatientListData';
 import { IPaginatedRequest } from '../../models/request/IPaginatedRequest';
 import { IStatusCount } from '../../models/response/IStatusCounts';
 import { IPatientDetailsResponse } from '../../models/response/IPatientDetailsResponse';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { BlockCaseComponent } from '../../pages/admin/admin-dashboard/patient-list/block-case/block-case.component';
 import { IBlockCase } from '../../models/request/IBlockCase';
+import { IPatientProviderListData } from '../../models/request/IPatientProviderListData';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AdminService {
-  getPatientListApi = ApiCallConstant.GET_PATIENT_LIST;
+  getPatientProviderListApi = ApiCallConstant.GET_PATIENT_PROVIDER_LIST;
   getStatusCountListApi = ApiCallConstant.GET_STATUS_COUNT_LIST;
   getPatientDetailsByIdApi = ApiCallConstant.GET_PATIENT_DETAILS;
 
   blockCaseApi = ApiCallConstant.BLOCK_CASE;
+
   constructor(private http: HttpClient) {}
 
-  getPatientList(
-    request: IPaginatedRequest
-  ): Observable<IResponse<IPaginatedResponse<IPatientListData[]>>> {
-    return this.http.post<IResponse<IPaginatedResponse<IPatientListData[]>>>(
-      this.getPatientListApi,
-      request
-    );
+  getPatientProviderList(
+    request: IPaginatedRequest,
+    userType: number
+  ): Observable<IResponse<IPaginatedResponse<IPatientProviderListData[]>>> {
+    return this.http.post<
+      IResponse<IPaginatedResponse<IPatientProviderListData[]>>
+    >(`${this.getPatientProviderListApi}?userType=${userType}`, request);
   }
 
-  statusCountList(): Observable<IResponse<IStatusCount>> {
-    return this.http.get<IResponse<IStatusCount>>(this.getStatusCountListApi);
+  statusCountList(userType: number): Observable<IResponse<IStatusCount>> {
+    return this.http.get<IResponse<IStatusCount>>(
+      `${this.getStatusCountListApi}?userType=${userType}`
+    );
   }
 
   getPatientDetails(

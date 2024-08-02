@@ -35,7 +35,7 @@ import { Router } from '@angular/router';
   styleUrl: './block-case.component.scss',
 })
 export class BlockCaseComponent {
-  @Input() patientName: string = '';
+  @Input() userName: string = '';
   @Input() userId!: number;
 
   constructor(
@@ -46,7 +46,7 @@ export class BlockCaseComponent {
   ) {}
 
   blockCaseForm = new FormGroup({
-    patientName: new FormControl('', Validators.required),
+    userName: new FormControl('', Validators.required),
     reasonForBlock: new FormControl('', Validators.required),
   });
 

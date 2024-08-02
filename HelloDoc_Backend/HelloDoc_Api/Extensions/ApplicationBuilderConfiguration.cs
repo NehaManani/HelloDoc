@@ -1,4 +1,6 @@
 using System.Reflection;
+using System.Text;
+using HelloDoc_Api.ExtAuthorization;
 using HelloDoc_BusinessAccessLayer.IServices;
 using HelloDoc_BusinessAccessLayer.Profiles;
 using HelloDoc_BusinessAccessLayer.Services;
@@ -7,7 +9,10 @@ using HelloDoc_DataAccessLayer.Data;
 using HelloDoc_DataAccessLayer.IRepositories;
 using HelloDoc_DataAccessLayer.Repositories;
 using HelloDoc_Entities.DTOs.Common;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 
 namespace HelloDoc_Api.Extensions
@@ -93,34 +98,139 @@ namespace HelloDoc_Api.Extensions
                 );
             });
         }
-        public static void ConfigureSwagger(this IServiceCollection services)
-        {
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "HelloDoc", Version = "v1" });
-                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
-                {
-                    In = ParameterLocation.Header,
-                    Description = "Please enter token",
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
-                    BearerFormat = "JWT",
-                    Scheme = "bearer"
-                });
+        // public static void ConfigureSwagger(this IServiceCollection services, IConfiguration config)
+        // {
+        //     services.AddSwaggerGen(c =>
+        //     {
+        //         c.SwaggerDoc("v1", new OpenApiInfo { Title = "HelloDoc", Version = "v1" });
+        //         c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+        //         {
+        //             In = ParameterLocation.Header,
+        //             Description = "Please enter token",
+        //             Name = "Authorization",
+        //             Type = SecuritySchemeType.Http,
+        //             BearerFormat = "JWT",
+        //             Scheme = "bearer"
+        //         });
 
-                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        //         c.AddSecurityRequirement(new OpenApiSecurityRequirement
+        //         {
+        //             {
+        //                 new OpenApiSecurityScheme
+        //                 {
+        //                     Reference = new OpenApiReference
+        //                     {
+        //                         Type = ReferenceType.SecurityScheme,
+        //                         Id = "Bearer"
+        //                     }
+        //                 },
+        //                 new string[]{}
+        //             }
+        //         });
+
+        //         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        //     .AddJwtBearer(options =>
+        //     {
+        //         options.TokenValidationParameters = new TokenValidationParameters
+        //         {
+        //             ValidateIssuer = true,
+        //             ValidateAudience = true,
+        //             ValidateLifetime = true,
+        //             ValidateIssuerSigningKey = true,
+        //             ValidIssuer = config["Jwt:Issuer"],
+        //             ValidAudience = config["Jwt:Issuer"],
+        //             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+        //         };
+        //     });
+
+        //         services.AddScoped<ExtAuthorizeFilter>();
+
+        //         services.AddScoped<IAuthorizationHandler, ExtAuthorizeHandler>();
+
+        //         services.AddAuthorization(config =>
+        //         {
+        //             config.AddPolicy(SystemConstants.ADMIN_POLICY, policy =>
+        //             {
+        //                 policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.ADMIN_POLICY));
+        //             });
+        //             config.AddPolicy(SystemConstants.PATIENT_POLICY, policy =>
+        //             {
+        //                 policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.PATIENT_POLICY));
+        //             });
+        //             config.AddPolicy(SystemConstants.PROVIDER_POLICY, policy =>
+        //             {
+        //                 policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.PROVIDER_POLICY));
+        //             });
+        //             config.AddPolicy(SystemConstants.ALL_USER_POLICY, policy =>
+        //             {
+        //                 policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.ALL_USER_POLICY));
+        //             });
+        //         });
+        //     });
+        // }
+        public static void ConfigureSwagger(this IServiceCollection services, IConfiguration config)
+        {
+            services.AddSwaggerGen(options =>
+            {
+                options.SwaggerDoc("v1", new OpenApiInfo { Title = "HelloDoc", Version = "v1" });
+                options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
                 {
-                    {
-                        new OpenApiSecurityScheme
-                        {
-                            Reference = new OpenApiReference
-                            {
-                                Type = ReferenceType.SecurityScheme,
-                                Id = "Bearer"
+                    Scheme = "Bearer",
+                    BearerFormat = "JWT",
+                    In = ParameterLocation.Header,
+                    Name = "Authorization",
+                    Description = "Bearer Authentication with JWT Token",
+                    Type = SecuritySchemeType.Http
+                });
+                options.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                {
+                    new OpenApiSecurityScheme {
+                        Reference = new OpenApiReference {
+                            Id = "Bearer",
+                            Type = ReferenceType.SecurityScheme
                             }
                         },
-                        new string[]{}
+                    new List < string > ()
                     }
+                });
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateLifetime = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidIssuer = config["Jwt:Issuer"],
+                    ValidAudience = config["Jwt:Issuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]))
+                };
+            });
+
+            services.AddScoped<ExtAuthorizeFilter>();
+
+            services.AddScoped<IAuthorizationHandler, ExtAuthorizeHandler>();
+
+            services.AddAuthorization(config =>
+            {
+                config.AddPolicy(SystemConstants.ADMIN_POLICY, policy =>
+                {
+                    policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.ADMIN_POLICY));
+                });
+                config.AddPolicy(SystemConstants.PATIENT_POLICY, policy =>
+                {
+                    policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.PATIENT_POLICY));
+                });
+                config.AddPolicy(SystemConstants.PROVIDER_POLICY, policy =>
+                {
+                    policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.PROVIDER_POLICY));
+                });
+                config.AddPolicy(SystemConstants.ALL_USER_POLICY, policy =>
+                {
+                    policy.Requirements.Add(new ExtAuthorizeRequirement(SystemConstants.ALL_USER_POLICY));
                 });
             });
         }

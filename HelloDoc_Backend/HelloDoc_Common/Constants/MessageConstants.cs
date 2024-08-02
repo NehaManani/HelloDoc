@@ -13,6 +13,7 @@ namespace HelloDoc_Common.Constants
             public const string OTP_SENT = "OTP has been sent to your registered email.";
             public const string RESET_PASSWORD = "Password reset successfully!";
             public const string BLOCK_USER = "User blocked!";
+
         }
 
         #endregion
@@ -34,6 +35,7 @@ namespace HelloDoc_Common.Constants
             public const string EMAIL_ALREADY_EXIST = "Email already exists.";
             public const string INVALID_TOKEN = "Invalid Token!";
             public const string TOKEN_EXPIRED = "Your session has been expired!";
+            public const string UNAUTHORIZE = "Access Unauthorized!";
         }
         #endregion
     }

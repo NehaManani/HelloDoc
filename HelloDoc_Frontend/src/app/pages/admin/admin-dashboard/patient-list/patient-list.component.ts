@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { IPatientListData } from '../../../../models/request/IPatientListData';
 import { NgClass, DecimalPipe, AsyncPipe } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -18,6 +17,8 @@ import { NotificationService } from '../../../../shared/services/notification.se
 import { IStatusCount } from '../../../../models/response/IStatusCounts';
 import { Router } from '@angular/router';
 import { ModalService } from '../../../../services/modal/modal.service';
+import { SystemConstants } from '../../../../constants/system-constants/system-constants';
+import { IPatientProviderListData } from '../../../../models/request/IPatientProviderListData';
 
 @Component({
   selector: 'app-patient-list',
@@ -39,8 +40,9 @@ import { ModalService } from '../../../../services/modal/modal.service';
   styleUrl: './patient-list.component.scss',
 })
 export class PatientListComponent {
+  userType: number = SystemConstants.PatientUser;
   activeCard: string = 'All';
-  datasource: IPatientListData[] = [];
+  datasource: IPatientProviderListData[] = [];
   pageIndex = 1;
   pageSize = 7;
   collectionSize!: number;
@@ -114,8 +116,10 @@ export class PatientListComponent {
       status: this.status,
     };
 
-    this.adminService.getPatientList(request).subscribe({
-      next: (response: IResponse<IPaginatedResponse<IPatientListData[]>>) => {
+    this.adminService.getPatientProviderList(request, this.userType).subscribe({
+      next: (
+        response: IResponse<IPaginatedResponse<IPatientProviderListData[]>>
+      ) => {
         if (response.success) {
           this.datasource = response.data.records;
           this.collectionSize = response.data.totalRecords;
@@ -128,7 +132,7 @@ export class PatientListComponent {
   }
 
   getStatusCount() {
-    this.adminService.statusCountList().subscribe({
+    this.adminService.statusCountList(this.userType).subscribe({
       next: (response: IResponse<IStatusCount>) => {
         if (response.success) {
           this.statusCounts = response.data;

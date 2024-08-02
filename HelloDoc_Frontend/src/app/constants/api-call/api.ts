@@ -24,8 +24,8 @@ export class ApiCallConstant {
     this.AREA_AUTHENTICATION + '/register-provider-request';
 
   //for admin
-  public static readonly GET_PATIENT_LIST =
-    this.AREA_ADMIN + '/patient-request-list';
+  public static readonly GET_PATIENT_PROVIDER_LIST =
+    this.AREA_ADMIN + '/patient-provider-list';
 
   public static readonly GET_STATUS_COUNT_LIST =
     this.AREA_ADMIN + '/status-count-list';

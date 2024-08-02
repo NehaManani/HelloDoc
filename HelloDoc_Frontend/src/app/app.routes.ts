@@ -11,6 +11,7 @@ import { AdminDashboardComponent } from './pages/admin/admin-dashboard/admin-das
 import { PatientListComponent } from './pages/admin/admin-dashboard/patient-list/patient-list.component';
 import { ViewCaseComponent } from './pages/admin/admin-dashboard/patient-list/view-case/view-case.component';
 import { AuthGuard } from './guards/auth.guard';
+import { ProviderListComponent } from './pages/admin/admin-dashboard/provider-list/provider-list.component';
 
 export const routes: Routes = [
   { path: '', component: SiteMainPageComponent },
@@ -31,6 +32,7 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       { path: 'patient-list', component: PatientListComponent },
+      { path: 'provider-list', component: ProviderListComponent },
       { path: 'view-case/:userId', component: ViewCaseComponent },
     ],
     canActivate: [AuthGuard],
